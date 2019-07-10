@@ -7,7 +7,7 @@ request_generation:
 substrate_generation:
     - substrates:
         ABBUseCaseFogNetworkGenerator:
-            sensor_actuator_loop_count: [10, 15, 30, 60, 120, 200, 400, 500, 1000]
+            sensor_actuator_loop_count: [2, 7, 12, 17, 22, 27]
             pseudo_random_seed: [1, 2, 3]
             cycle_tree_ratio: [0.6]
             cycle_count_ratio: [0.2]
