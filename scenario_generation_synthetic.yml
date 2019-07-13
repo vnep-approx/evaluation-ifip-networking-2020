@@ -14,13 +14,13 @@ request_generation:
 substrate_generation:
     - substrates:
         SyntheticCactusSubstrateGenerator:
-            node_count: [4, 125, 250, 375, 500]
+            node_count: [2, 4, 8, 12, 16, 24, 32, 48, 64, 125, 250, 310, 375, 440, 500]
             pseudo_random_seed: [0]
             cycle_tree_ratio: [0.6]
             cycle_count_ratio: [0.2]
             tree_count_ratio: [0.2]
             node_capacity_interval: [[0.0, 1.0]]
-            link_capacity_interval: [[0.0, 1.0]]
+            link_capacity_interval: [[0.0, 1.0], [0.5, 2.0]]
 
 scenario_repetition: 1
 
