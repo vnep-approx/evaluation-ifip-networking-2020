@@ -25,7 +25,8 @@ import click
 import os
 import logging
 from alib import util
-from . import solution_reducer
+from . import solution_reducer, fog_model_plots
+
 
 @click.group()
 def cli():
@@ -59,6 +60,26 @@ def reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant(input_pickle_file, output
     initialize_logger(log_file, log_level_print, log_level_file)
     reducer = solution_reducer.RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer()
     reducer.reduce_result_collection(input_pickle_file, output_pickle_file)
+
+
+@cli.command(short_help="Creates a boxplot for costs and total running times")
+@click.argument('reduced_solutions_input_pickle_name', type=click.Path())
+@click.argument('config_param_path_for_aggregate', type=click.STRING)
+@click.option('--output_plot_file_name', type=click.STRING, default=None, help="Output file name")
+@click.option('--output_path', type=click.Path(), default=None, help="Output folder")
+@click.option('--output_filetype', type=click.STRING, default="png", help="Output file type")
+@click.option('--log_level_print', type=click.STRING, default="info", help="log level for stdout")
+@click.option('--log_level_file', type=click.STRING, default="debug", help="log level for log file")
+def make_box_plot(reduced_solutions_input_pickle_name,
+                  config_param_path_for_aggregate, output_plot_file_name,
+                  output_path, output_filetype, log_level_print, log_level_file):
+    util.ExperimentPathHandler.initialize(check_emptiness_log=False, check_emptiness_output=False)
+    log_file = os.path.join(util.ExperimentPathHandler.LOG_DIR,
+                            "plotter_{}.log".format(os.path.basename(reduced_solutions_input_pickle_name)))
+    initialize_logger(log_file, log_level_print, log_level_file)
+    plotter = fog_model_plots.BoxPlotter(reduced_solutions_input_pickle_name,
+                                         output_plot_file_name, output_path, output_filetype)
+    plotter.plot_reduced_data(config_param_path_for_aggregate)
 
 
 if __name__ == '__main__':

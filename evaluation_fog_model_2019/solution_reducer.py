@@ -22,14 +22,30 @@
 #
 
 import os
+from collections import namedtuple
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
+from vnep_approx import treewidth_based_fog_model
 from alib import util, solutions
 
+
 REQUIRED_FOR_PICKLE = solutions  # this prevents pycharm from removing this import, which is required for unpickling solutions
+
+
+SepLPCostVariantSingleReducedResult = namedtuple(
+    "SepLPCostVariantSingleReducedResult",
+    [
+        "feasible",
+        "total_runtime",                    # sum of 3 below
+        "preprocess_runtime",               # init model
+        "optimization_runtime",             # sep LP with dynVMP
+        "postprocess_runtime",              # randomized rounding
+        "best_integer_cost",
+        "best_fractional_cost"
+    ])
 
 
 class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
@@ -63,8 +79,8 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
             self.logger.info(".. Reducing results of algorithm {}".format(alg))
             for sc_id, ex_param_solution_dict in scenario_solution_dict.iteritems():
                 self.logger.info("   .. handling scenario {}".format(sc_id))
-                for ex_id, solution in ex_param_solution_dict.iteritems():
-                    compressed = self.reduce_single_solution(solution)
+                for ex_id, result in ex_param_solution_dict.iteritems():
+                    compressed = self.reduce_single_solution(result)
                     ex_param_solution_dict[ex_id] = compressed
 
         self.logger.info("Writing result pickle to {}".format(reduced_randround_solutions_output_pickle_path))
@@ -73,5 +89,32 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
         self.logger.info("All done.")
         return sss
 
-    def reduce_single_solution(self, solution):
-        return solution
+    def reduce_single_solution(self, result):
+        assert isinstance(result, treewidth_based_fog_model.RandRoundSepLPOptDynVMPCollectionResultForCostVariant)
+        if not result.overall_feasible:
+            compressed = SepLPCostVariantSingleReducedResult(feasible=result.overall_feasible,
+                                                             preprocess_runtime=0,
+                                                             optimization_runtime=0,
+                                                             postprocess_runtime=0,
+                                                             best_integer_cost=0,
+                                                             best_fractional_cost=0,
+                                                             total_runtime=0)
+        else:
+            best_solution_cost = None
+            # 'identifier' is the lp computation and randomization order methods tuple.
+            for identifier in result.solutions.keys():
+                list_of_solutions = result.solutions[identifier]
+                new_best_solution = min(list_of_solutions, key= lambda x: x.cost)
+                if best_solution_cost is None or new_best_solution.cost < best_solution_cost:
+                    best_solution_cost = new_best_solution.cost
+            total_runtime = result.lp_computation_information.time_preprocessing +\
+                            result.lp_computation_information.time_optimization + \
+                            result.lp_computation_information.time_postprocessing
+            compressed = SepLPCostVariantSingleReducedResult(feasible=result.overall_feasible,
+                                                             preprocess_runtime=result.lp_computation_information.time_preprocessing,
+                                                             optimization_runtime=result.lp_computation_information.time_optimization,
+                                                             postprocess_runtime=result.lp_computation_information.time_postprocessing,
+                                                             best_integer_cost=best_solution_cost,
+                                                             best_fractional_cost=result.lp_computation_information.status.objValue,
+                                                             total_runtime=total_runtime)
+        return compressed
