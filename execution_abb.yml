@@ -1,5 +1,5 @@
-SCENARIO_INPUT_PICKLE: "synthetic_scenarios.pickle"
-RESULT_OUTPUT_PICKLE:  "synthetic_scenarios_results.pickle"
+SCENARIO_INPUT_PICKLE: "abb_scenarios.pickle"
+RESULT_OUTPUT_PICKLE:  "abb_scenarios_results.pickle"
 
 RUN_PARAMETERS:
     - ALGORITHM:

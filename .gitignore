@@ -1,3 +1,5 @@
 *.pickle
 gurobi.log
+nohup.out
+*.pyc
 
