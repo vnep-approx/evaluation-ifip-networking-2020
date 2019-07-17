@@ -52,7 +52,8 @@ boxplot_shown_text = dict(
     preprocess_runtime="Model creation time",
     optimization_runtime="Optimization time",
     postprocess_runtime="Randomized Rounding time",
-    sensor_actuator_loop_count="N"
+    sensor_actuator_loop_count="N",
+    node_count="Substrate network node count"
 )
 
 
@@ -143,12 +144,15 @@ class BoxPlotter(object):
         self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
 
     def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
+        # sort the data to be plotted by their x tick values
+        x_tick_with_values_sorted = sorted(x_axis_to_aggregate_data.iteritems(),
+                                           key=lambda t: t[0])
         # lists of values for each box
-        values_to_plot = x_axis_to_aggregate_data.values()
+        values_to_plot = map(lambda t: t[1], x_tick_with_values_sorted)
         fig, ax = plt.subplots()
         pos = np.array(range(len(values_to_plot))) + 1
         ax.boxplot(values_to_plot, positions=pos, whis='range')
-        ax.set_xticklabels(x_axis_to_aggregate_data.keys())
+        ax.set_xticklabels(map(lambda t: t[0], x_tick_with_values_sorted))
         ax.set_xlabel(boxplot_shown_text[internal_xaxis_name])
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
