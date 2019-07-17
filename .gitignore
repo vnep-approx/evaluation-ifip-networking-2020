@@ -2,4 +2,6 @@
 gurobi.log
 nohup.out
 *.pyc
-
+*.png
+*.pdf
+abb_plots

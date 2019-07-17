@@ -23,6 +23,7 @@
 
 import os
 import numpy as np
+import logging
 from collections import namedtuple
 try:
     import cPickle as pickle
@@ -32,6 +33,7 @@ import matplotlib.pyplot as plt
 
 from alib import util
 
+# NOTE: not used currently
 AggregatedData = namedtuple(
     "AggregatedData",
     [
@@ -43,11 +45,14 @@ AggregatedData = namedtuple(
     ]
 )
 
-
-# TODO: these could be input arguments too
-boxplot_options = dict(
-    title="Cost",
-    x_axis_label="N"
+# maps from reduced key data or config file data to text which should be shown.
+boxplot_shown_text = dict(
+    best_integer_cost="Cost",
+    total_runtime="Total running time",
+    preprocess_runtime="Model creation time",
+    optimization_runtime="Optimization time",
+    postprocess_runtime="Randomized Rounding time",
+    sensor_actuator_loop_count="N"
 )
 
 
@@ -78,7 +83,9 @@ class BoxPlotter(object):
                           output_plot_file_name=None,
                           output_path=None,
                           output_filetype="png"):
-        self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True)
+        self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True,
+                                      print_level=logging.DEBUG)
+
         reduced_solutions_input_pickle_path = os.path.join(
             util.ExperimentPathHandler.INPUT_DIR,
             reduced_solutions_input_pickle_name
@@ -92,8 +99,7 @@ class BoxPlotter(object):
         if output_path is None:
             self.output_path = util.ExperimentPathHandler.OUTPUT_DIR
         else:
-            self.output_path = os.path.join(util.ExperimentPathHandler.OUTPUT_DIR,
-                                       reduced_solutions_input_pickle_name)
+            self.output_path = output_path
 
         self.logger.info("\nWill read from ..\n\t{} \n\t\tand save plot with name {} into\n\t{}\n".
                     format(reduced_solutions_input_pickle_path, self.full_output_filename, self.output_path))
@@ -102,9 +108,8 @@ class BoxPlotter(object):
         with open(reduced_solutions_input_pickle_path, "rb") as input_file:
             self.reduced_scenario_solution_storage = pickle.load(input_file)
 
-    # TODO: make config_param_path_for_x_axis input
-    def plot_reduced_data(self, config_param_path_for_aggregate,
-                          config_param_path_for_x_axis="substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/sensor_actuator_loop_count"):
+    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot):
+
         spc = self.reduced_scenario_solution_storage.scenario_parameter_container
         config_path_list = config_param_path_for_aggregate.split('/')
         if len(config_path_list) < 2:
@@ -123,30 +128,32 @@ class BoxPlotter(object):
                 if len(scenario_id_set) > 0:
                     scenario_ids_to_aggregate.append(scenario_id_set.pop())
             if len(scenario_ids_to_aggregate) > 0:
-                # TODO: make 2nd parameter input
-                aggegate_data, feasibility_ratio = self.aggregate_data_for_scenario_ids(scenario_ids_to_aggregate, "best_integer_cost")
+                plot_data, feasibility_ratio = self.collect_data_for_scenario_ids(scenario_ids_to_aggregate,
+                                                                                      reduced_result_key=reduced_result_key_to_plot)
                 self.logger.debug("Feasibility ratio for scenario ids {}: {}".format(scenario_ids_to_aggregate, feasibility_ratio))
                 # NOTE: x_tick_label should be the same for all aggregated scenarios (might be checked...)
                 config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container\
                                                             .scenario_parameter_combination_list[scenario_ids_to_aggregate[0]]
                 x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
                                                                 config_param_path_for_x_axis)
-                x_axis_to_aggregate_data[x_tick_label] = aggegate_data
+                self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
+                x_axis_to_aggregate_data[x_tick_label] = plot_data
             else:
                 there_is_at_least_one_left = False
-        self.plot_from_aggregated_data(x_axis_to_aggregate_data)
+        self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
 
-    def plot_from_aggregated_data(self, x_axis_to_aggregate_data):
+    def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
         # lists of values for each box
         values_to_plot = x_axis_to_aggregate_data.values()
         fig, ax = plt.subplots()
         pos = np.array(range(len(values_to_plot))) + 1
-        ax.boxplot(values_to_plot, positions=pos)
-        # TODO: use keys as x axis label
-        plt.show()
-        pass
+        ax.boxplot(values_to_plot, positions=pos, whis='range')
+        ax.set_xticklabels(x_axis_to_aggregate_data.keys())
+        ax.set_xlabel(boxplot_shown_text[internal_xaxis_name])
+        ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
+        plt.savefig(os.path.join(self.output_path, self.full_output_filename))
 
-    def aggregate_data_for_scenario_ids(self, scenario_id_list, reduced_result_key):
+    def collect_data_for_scenario_ids(self, scenario_id_list, reduced_result_key):
         # we are not prepared for multiple algorithms...
         alg_result_dict = self.reduced_scenario_solution_storage.algorithm_scenario_solution_dictionary
         if len(alg_result_dict) > 1:
@@ -155,8 +162,8 @@ class BoxPlotter(object):
         values_to_aggregate = []
         infeasible_count = 0
         for sc_id in scenario_id_list:
-            # TODO: only one execution id is considered, we might shuold aggregate for all execution ID-s?
             if sc_id in reduced_result_dict:
+                # TODO: only one execution id is considered, we might aggregate for all execution ID-s?
                 red_res = reduced_result_dict[sc_id][0]
                 if red_res.feasible:
                     values_to_aggregate.append(getattr(red_res, reduced_result_key))
@@ -165,6 +172,5 @@ class BoxPlotter(object):
             else:
                 # TODO: why this might happen?
                 self.logger.warn("Reduced solution not found for scenario number {}, skipping from aggregating...".format(sc_id))
-        # TODO: fix names, input output
         feasibility_ratio = float(len(scenario_id_list) - infeasible_count) / len(scenario_id_list)
         return values_to_aggregate, feasibility_ratio
