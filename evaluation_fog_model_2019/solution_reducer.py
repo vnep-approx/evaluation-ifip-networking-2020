@@ -117,4 +117,5 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                              best_integer_cost=best_solution_cost,
                                                              best_fractional_cost=result.lp_computation_information.status.objValue,
                                                              total_runtime=total_runtime)
+        self.logger.debug("Extracted reduced result: {}".format(compressed))
         return compressed

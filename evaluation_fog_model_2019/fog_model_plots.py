@@ -175,6 +175,8 @@ class BoxPlotter(object):
                     infeasible_count += 1
             else:
                 # TODO: why this might happen?
-                self.logger.warn("Reduced solution not found for scenario number {}, skipping from aggregating...".format(sc_id))
+                self.logger.warn("Reduced solution not found for scenario number {}, skipping "
+                                 "from aggregating... adding to infeasible count".format(sc_id))
+                infeasible_count += 1
         feasibility_ratio = float(len(scenario_id_list) - infeasible_count) / len(scenario_id_list)
         return values_to_aggregate, feasibility_ratio
