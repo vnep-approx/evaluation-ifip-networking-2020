@@ -159,7 +159,7 @@ class BoxPlotter(object):
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
 
         if self.show_feasibility:
-            ax.text(0.1, 1.05, 'Feasibility', horizontalalignment='left',
+            ax.text(0.0, 1.05, 'Feasibility', horizontalalignment='center',
                     transform=ax.get_xaxis_transform())
             for x_tick, plot_data_tuple in zip(pos, x_tick_with_values_sorted):
                 feasibility = plot_data_tuple[1][1]
@@ -176,6 +176,7 @@ class BoxPlotter(object):
         reduced_result_dict = alg_result_dict.values()[0]
         values_to_aggregate = []
         infeasible_count = 0
+        number_of_found_results = len(scenario_id_list)
         for sc_id in scenario_id_list:
             if sc_id in reduced_result_dict:
                 # TODO: only one execution id is considered, we might aggregate for all execution ID-s?
@@ -185,9 +186,13 @@ class BoxPlotter(object):
                 else:
                     infeasible_count += 1
             else:
-                # TODO: why this might happen?
+                # it might happen when we executed to scenarios in two batches
                 self.logger.warn("Reduced solution not found for scenario number {}, skipping "
-                                 "from aggregating... adding to infeasible count".format(sc_id))
-                infeasible_count += 1
-        feasibility_ratio = float(len(scenario_id_list) - infeasible_count) / len(scenario_id_list)
+                                 "from aggregating...".format(sc_id))
+                # we do not want these to affect the feasibility ratio
+                number_of_found_results -= 1
+        if number_of_found_results > 0:
+            feasibility_ratio = float(number_of_found_results - infeasible_count) / number_of_found_results
+        else:
+            feasibility_ratio = 0.0
         return values_to_aggregate, feasibility_ratio
