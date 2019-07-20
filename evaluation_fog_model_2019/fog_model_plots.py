@@ -83,7 +83,7 @@ class BoxPlotter(object):
     def __init__(self, reduced_solutions_input_pickle_name,
                           output_plot_file_name=None,
                           output_path=None,
-                          output_filetype="png"):
+                          output_filetype="png", show_feasibility=True):
         self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True,
                                       print_level=logging.DEBUG)
 
@@ -108,6 +108,7 @@ class BoxPlotter(object):
         self.logger.info("Reading pickle file at {}".format(reduced_solutions_input_pickle_path))
         with open(reduced_solutions_input_pickle_path, "rb") as input_file:
             self.reduced_scenario_solution_storage = pickle.load(input_file)
+        self.show_feasibility = show_feasibility
 
     def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot):
 
@@ -123,6 +124,7 @@ class BoxPlotter(object):
         self.logger.info("Aggregating over parameter to scenario ID dictionary {}".format(scenario_id_dict_for_aggregation))
         there_is_at_least_one_left = True
         x_axis_to_aggregate_data = {}
+        feasibility_ratios = {}
         while there_is_at_least_one_left:
             scenario_ids_to_aggregate = []
             for aggregation_value, scenario_id_set in scenario_id_dict_for_aggregation.iteritems():
@@ -138,7 +140,7 @@ class BoxPlotter(object):
                 x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
                                                                 config_param_path_for_x_axis)
                 self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
-                x_axis_to_aggregate_data[x_tick_label] = plot_data
+                x_axis_to_aggregate_data[x_tick_label] = (plot_data, feasibility_ratio)
             else:
                 there_is_at_least_one_left = False
         self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
@@ -148,13 +150,22 @@ class BoxPlotter(object):
         x_tick_with_values_sorted = sorted(x_axis_to_aggregate_data.iteritems(),
                                            key=lambda t: t[0])
         # lists of values for each box
-        values_to_plot = map(lambda t: t[1], x_tick_with_values_sorted)
+        values_to_plot = map(lambda t: t[1][0], x_tick_with_values_sorted)
         fig, ax = plt.subplots()
         pos = np.array(range(len(values_to_plot))) + 1
-        ax.boxplot(values_to_plot, positions=pos, whis='range')
+        ax.boxplot(values_to_plot, positions=pos, whis=1.5)
         ax.set_xticklabels(map(lambda t: t[0], x_tick_with_values_sorted))
         ax.set_xlabel(boxplot_shown_text[internal_xaxis_name])
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
+
+        if self.show_feasibility:
+            ax.text(0.1, 1.05, 'Feasibility', horizontalalignment='left',
+                    transform=ax.get_xaxis_transform())
+            for x_tick, plot_data_tuple in zip(pos, x_tick_with_values_sorted):
+                feasibility = plot_data_tuple[1][1]
+                ax.text(x_tick, 1.05, str(np.round(feasibility * 100))+'%', horizontalalignment='center',
+                        transform=ax.get_xaxis_transform())
+
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
 
     def collect_data_for_scenario_ids(self, scenario_id_list, reduced_result_key):
