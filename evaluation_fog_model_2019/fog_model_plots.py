@@ -124,7 +124,6 @@ class BoxPlotter(object):
         self.logger.info("Aggregating over parameter to scenario ID dictionary {}".format(scenario_id_dict_for_aggregation))
         there_is_at_least_one_left = True
         x_axis_to_aggregate_data = {}
-        feasibility_ratios = {}
         while there_is_at_least_one_left:
             scenario_ids_to_aggregate = []
             for aggregation_value, scenario_id_set in scenario_id_dict_for_aggregation.iteritems():
@@ -139,8 +138,14 @@ class BoxPlotter(object):
                                                             .scenario_parameter_combination_list[scenario_ids_to_aggregate[0]]
                 x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
                                                                 config_param_path_for_x_axis)
-                self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
-                x_axis_to_aggregate_data[x_tick_label] = (plot_data, feasibility_ratio)
+                if x_tick_label not in x_axis_to_aggregate_data:
+                    self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
+                    x_axis_to_aggregate_data[x_tick_label] = (plot_data, feasibility_ratio)
+                else:
+                    self.logger.debug("Appending plot data {} for x tick lable {} with existing values: {}".
+                                      format(plot_data, x_tick_label, x_axis_to_aggregate_data[x_tick_label]))
+                    self.logger.warn("Feasibility values are invalid! NotImplemented!")
+                    x_axis_to_aggregate_data[x_tick_label][0].extend(plot_data)
             else:
                 there_is_at_least_one_left = False
         self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
