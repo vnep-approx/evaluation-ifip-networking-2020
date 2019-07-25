@@ -53,7 +53,9 @@ boxplot_shown_text = dict(
     optimization_runtime="Optimization time",
     postprocess_runtime="Randomized Rounding time",
     sensor_actuator_loop_count="N",
-    node_count="Substrate network node count"
+    node_count="Substrate network node count",
+    node_resource_factor="NRF",
+    edge_resource_factor="ERF"
 )
 
 
@@ -76,6 +78,10 @@ def extract_value_from_embedded_dict(embedded_dict, key_seq_str, sep='/'):
     for i in range(1, len(split_key_seq)):
         dict_value = dict_value[split_key_seq[i]]
     return dict_value
+
+
+# Calculate feasibility ratio
+calc_feas = lambda infc, totc: (totc - infc) / float(totc) if totc > 0 else 0.0
 
 
 class BoxPlotter(object):
@@ -109,8 +115,9 @@ class BoxPlotter(object):
         with open(reduced_solutions_input_pickle_path, "rb") as input_file:
             self.reduced_scenario_solution_storage = pickle.load(input_file)
         self.show_feasibility = show_feasibility
+        self.scenario_range = None
 
-    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot):
+    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot, scenario_range):
 
         spc = self.reduced_scenario_solution_storage.scenario_parameter_container
         config_path_list = config_param_path_for_aggregate.split('/')
@@ -121,18 +128,31 @@ class BoxPlotter(object):
         # make a copy of the dict so we can modify it
         scenario_id_dict_for_aggregation = dict(extract_value_from_embedded_dict(spc.scenario_parameter_dict,
                                                                             config_param_path_for_aggregate))
+        if scenario_range != '':
+            start = int(scenario_range.split('-')[0])
+            stop = int(scenario_range.split('-')[1])
+            self.scenario_range = [s for s in range(start, stop+1)]
+            self.logger.info("Using scenarios only: {}".format(self.scenario_range))
         self.logger.info("Aggregating over parameter to scenario ID dictionary {}".format(scenario_id_dict_for_aggregation))
-        there_is_at_least_one_left = True
+        there_is_at_least_one_left = {k: len(v)>0 for k, v in scenario_id_dict_for_aggregation.items()}
         x_axis_to_aggregate_data = {}
-        while there_is_at_least_one_left:
+        while any(there_is_at_least_one_left.values()):
             scenario_ids_to_aggregate = []
             for aggregation_value, scenario_id_set in scenario_id_dict_for_aggregation.iteritems():
                 if len(scenario_id_set) > 0:
-                    scenario_ids_to_aggregate.append(scenario_id_set.pop())
+                    sc_id = scenario_id_set.pop()
+                    # skip scenarios is a range is given an this is not in the range
+                    if self.scenario_range is not None:
+                        if sc_id not in self.scenario_range:
+                            continue
+                    scenario_ids_to_aggregate.append(sc_id)
+                else:
+                    there_is_at_least_one_left[aggregation_value] = False
             if len(scenario_ids_to_aggregate) > 0:
-                plot_data, feasibility_ratio = self.collect_data_for_scenario_ids(scenario_ids_to_aggregate,
+                plot_data, infeasible_count, found_sol_count = self.collect_data_for_scenario_ids(scenario_ids_to_aggregate,
                                                                                       reduced_result_key=reduced_result_key_to_plot)
-                self.logger.debug("Feasibility ratio for scenario ids {}: {}".format(scenario_ids_to_aggregate, feasibility_ratio))
+                self.logger.debug("Feasibility ratio for scenario ids {}: {}".format(scenario_ids_to_aggregate,
+                                                                                     calc_feas(infeasible_count, found_sol_count)))
                 # NOTE: x_tick_label should be the same for all aggregated scenarios (might be checked...)
                 config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container\
                                                             .scenario_parameter_combination_list[scenario_ids_to_aggregate[0]]
@@ -140,14 +160,13 @@ class BoxPlotter(object):
                                                                 config_param_path_for_x_axis)
                 if x_tick_label not in x_axis_to_aggregate_data:
                     self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
-                    x_axis_to_aggregate_data[x_tick_label] = (plot_data, feasibility_ratio)
+                    x_axis_to_aggregate_data[x_tick_label] = [plot_data, infeasible_count, found_sol_count]
                 else:
                     self.logger.debug("Appending plot data {} for x tick lable {} with existing values: {}".
                                       format(plot_data, x_tick_label, x_axis_to_aggregate_data[x_tick_label]))
-                    self.logger.warn("Feasibility values are invalid! NotImplemented!")
                     x_axis_to_aggregate_data[x_tick_label][0].extend(plot_data)
-            else:
-                there_is_at_least_one_left = False
+                    x_axis_to_aggregate_data[x_tick_label][1] += infeasible_count
+                    x_axis_to_aggregate_data[x_tick_label][2] += found_sol_count
         self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
 
     def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
@@ -167,8 +186,10 @@ class BoxPlotter(object):
             ax.text(0.0, 1.05, 'Feasibility', horizontalalignment='center',
                     transform=ax.get_xaxis_transform())
             for x_tick, plot_data_tuple in zip(pos, x_tick_with_values_sorted):
-                feasibility = plot_data_tuple[1][1]
-                ax.text(x_tick, 1.05, str(np.round(feasibility * 100))+'%', horizontalalignment='center',
+                infeasible_count = plot_data_tuple[1][1]
+                found_sol_count = plot_data_tuple[1][2]
+                feasibility = calc_feas(infeasible_count, found_sol_count)
+                ax.text(x_tick, 1.05, str(int(np.round(feasibility * 100)))+'%', horizontalalignment='center',
                         transform=ax.get_xaxis_transform())
 
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
@@ -196,8 +217,4 @@ class BoxPlotter(object):
                                  "from aggregating...".format(sc_id))
                 # we do not want these to affect the feasibility ratio
                 number_of_found_results -= 1
-        if number_of_found_results > 0:
-            feasibility_ratio = float(number_of_found_results - infeasible_count) / number_of_found_results
-        else:
-            feasibility_ratio = 0.0
-        return values_to_aggregate, feasibility_ratio
+        return values_to_aggregate, infeasible_count, number_of_found_results
