@@ -117,6 +117,13 @@ class BoxPlotter(object):
         self.show_feasibility = show_feasibility
         self.scenario_range = None
 
+    def get_scenario_x_tick_label(self, scenario_id, config_param_path_for_x_axis):
+        config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container \
+            .scenario_parameter_combination_list[scenario_id]
+        x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
+                                                        config_param_path_for_x_axis)
+        return x_tick_label
+
     def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot, scenario_range):
 
         spc = self.reduced_scenario_solution_storage.scenario_parameter_container
@@ -138,6 +145,7 @@ class BoxPlotter(object):
         x_axis_to_aggregate_data = {}
         while any(there_is_at_least_one_left.values()):
             scenario_ids_to_aggregate = []
+            x_tick_label = None
             for aggregation_value, scenario_id_set in scenario_id_dict_for_aggregation.iteritems():
                 if len(scenario_id_set) > 0:
                     sc_id = scenario_id_set.pop()
@@ -145,7 +153,16 @@ class BoxPlotter(object):
                     if self.scenario_range is not None:
                         if sc_id not in self.scenario_range:
                             continue
-                    scenario_ids_to_aggregate.append(sc_id)
+                    if x_tick_label is None:
+                        # bind which x tick label value we are looking for
+                        x_tick_label = self.get_scenario_x_tick_label(sc_id, config_param_path_for_x_axis)
+                        scenario_ids_to_aggregate.append(sc_id)
+                    elif x_tick_label == self.get_scenario_x_tick_label(sc_id, config_param_path_for_x_axis):
+                        # only proceed if this is the same value
+                        scenario_ids_to_aggregate.append(sc_id)
+                    else:
+                        # add back, another iteration will take care of it.
+                        scenario_id_set.add(sc_id)
                 else:
                     there_is_at_least_one_left[aggregation_value] = False
             if len(scenario_ids_to_aggregate) > 0:
@@ -153,16 +170,11 @@ class BoxPlotter(object):
                                                                                       reduced_result_key=reduced_result_key_to_plot)
                 self.logger.debug("Feasibility ratio for scenario ids {}: {}".format(scenario_ids_to_aggregate,
                                                                                      calc_feas(infeasible_count, found_sol_count)))
-                # NOTE: x_tick_label should be the same for all aggregated scenarios (might be checked...)
-                config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container\
-                                                            .scenario_parameter_combination_list[scenario_ids_to_aggregate[0]]
-                x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
-                                                                config_param_path_for_x_axis)
                 if x_tick_label not in x_axis_to_aggregate_data:
                     self.logger.debug("Saving plot data {} for x tick label {}".format(plot_data, x_tick_label))
                     x_axis_to_aggregate_data[x_tick_label] = [plot_data, infeasible_count, found_sol_count]
                 else:
-                    self.logger.debug("Appending plot data {} for x tick lable {} with existing values: {}".
+                    self.logger.debug("Appending plot data {} for x tick label {} with existing values: {}".
                                       format(plot_data, x_tick_label, x_axis_to_aggregate_data[x_tick_label]))
                     x_axis_to_aggregate_data[x_tick_label][0].extend(plot_data)
                     x_axis_to_aggregate_data[x_tick_label][1] += infeasible_count
@@ -170,6 +182,7 @@ class BoxPlotter(object):
         self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
 
     def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
+        self.logger.info("Plotting data: {}".format(x_axis_to_aggregate_data))
         # sort the data to be plotted by their x tick values
         x_tick_with_values_sorted = sorted(x_axis_to_aggregate_data.iteritems(),
                                            key=lambda t: t[0])
