@@ -25,6 +25,8 @@ With scenario ID restriction:
 - python -m make_box_plot scenarios_synthetic_small_result_inorder_numericfocus_reduced.pickle "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "best_integer_cost" --output_plot_file_name "node_count-to-cost-erf10-nrf01" --output_path /home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/erf_nrf_sweep --show_feasibility --scenario_range 480-495
 - python -m make_box_plot scenarios_synthetic_small_result_inorder_numericfocus_reduced.pickle "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "best_integer_cost" --output_plot_file_name "node_count-to-cost-erf10-nrf025" --output_path /home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/erf_nrf_sweep --show_feasibility --scenario_range 496-511
 
+make_box_plot scenarios_synthetic_small_result_reduced.pickle "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "best_integer_cost" --output_plot_file_name "node_count-to-cost" --output_path /home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/prevm_small_scale_test --show_feasibility
+
 # TODO
 - setup.py to make it installable python package
 
