@@ -55,7 +55,8 @@ boxplot_shown_text = dict(
     sensor_actuator_loop_count="N",
     node_count="Substrate network node count",
     node_resource_factor="NRF",
-    edge_resource_factor="ERF"
+    edge_resource_factor="ERF",
+    best_fractional_cost="Fractional cost"
 )
 
 
