@@ -44,7 +44,9 @@ SepLPCostVariantSingleReducedResult = namedtuple(
         "optimization_runtime",             # sep LP with dynVMP
         "postprocess_runtime",              # randomized rounding
         "best_integer_cost",
-        "best_fractional_cost"
+        "best_fractional_cost",
+        "max_edge_load",
+        "max_node_load"
     ])
 
 
@@ -98,17 +100,19 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                              postprocess_runtime=0,
                                                              best_integer_cost=0,
                                                              best_fractional_cost=0,
-                                                             total_runtime=0)
+                                                             total_runtime=0,
+                                                             max_edge_load=0,
+                                                             max_node_load=0)
         else:
-            best_solution_cost = None
+            best_solution = None
             # 'identifier' is the lp computation and randomization order methods tuple.
             for identifier in result.solutions.keys():
                 list_of_solutions = result.solutions[identifier]
                 if len(list_of_solutions) > 0:
                     new_best_solution = min(list_of_solutions, key= lambda x: x.cost)
-                    if best_solution_cost is None or new_best_solution.cost < best_solution_cost:
-                        best_solution_cost = new_best_solution.cost
-            if best_solution_cost is None:
+                    if best_solution is None or new_best_solution.cost < best_solution.cost:
+                        best_solution = new_best_solution
+            if best_solution is None:
                 raise ValueError("Feasible solution has no integral solution added for any randomized rounding method.")
             total_runtime = result.lp_computation_information.time_preprocessing +\
                             result.lp_computation_information.time_optimization + \
@@ -117,8 +121,10 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                              preprocess_runtime=result.lp_computation_information.time_preprocessing,
                                                              optimization_runtime=result.lp_computation_information.time_optimization,
                                                              postprocess_runtime=result.lp_computation_information.time_postprocessing,
-                                                             best_integer_cost=best_solution_cost,
+                                                             best_integer_cost=best_solution.cost,
                                                              best_fractional_cost=result.lp_computation_information.status.objValue,
-                                                             total_runtime=total_runtime)
+                                                             total_runtime=total_runtime,
+                                                             max_edge_load=best_solution.max_edge_load,
+                                                             max_node_load=best_solution.max_node_load)
         self.logger.debug("Extracted reduced result: {}".format(compressed))
         return compressed

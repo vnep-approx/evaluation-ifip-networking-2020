@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
-mkdir -p synthetic_plots
+folder_name=$1
 
-python -m evaluation_fog_model_2019.cli make_box_plot $1 "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "best_integer_cost" --output_plot_file_name "Substrate_size-to-cost" --output_path `pwd`/synthetic_plots
-./move_exp_logs.sh
+mkdir -p ${folder_name}
 
-python -m evaluation_fog_model_2019.cli make_box_plot $1 "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "total_runtime" --output_plot_file_name "Substrate_size-to-time" --output_path `pwd`/synthetic_plots
-./move_exp_logs.sh
+for p in total_runtime best_integer_cost max_edge_load max_node_load;
+do
+
+    python -m evaluation_fog_model_2019.cli make_box_plot $2 "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed"\
+     "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" $p --output_plot_file_name \
+     "Substrate_size-to-$p" --output_path `pwd`/${folder_name} --show_feasibility;
+    for file in ${ALIB_EXPERIMENT_HOME}/log/*; 	do mv $file ${folder_name} ; done
+
+done

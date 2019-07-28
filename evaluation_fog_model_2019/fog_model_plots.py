@@ -48,15 +48,17 @@ AggregatedData = namedtuple(
 # maps from reduced key data or config file data to text which should be shown.
 boxplot_shown_text = dict(
     best_integer_cost="Cost",
-    total_runtime="Total running time",
-    preprocess_runtime="Model creation time",
-    optimization_runtime="Optimization time",
-    postprocess_runtime="Randomized Rounding time",
+    total_runtime="Total running time [s]",
+    preprocess_runtime="Model creation time [s]",
+    optimization_runtime="Optimization time [s]",
+    postprocess_runtime="Randomized Rounding time [s]",
     sensor_actuator_loop_count="N",
     node_count="Substrate network node count",
     node_resource_factor="NRF",
     edge_resource_factor="ERF",
-    best_fractional_cost="Fractional cost"
+    best_fractional_cost="Fractional cost",
+    max_node_load="Max node load ratio",
+    max_edge_load="Max edge load ratio"
 )
 
 
