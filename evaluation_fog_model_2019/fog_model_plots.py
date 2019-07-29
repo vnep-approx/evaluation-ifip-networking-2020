@@ -25,6 +25,10 @@ import os
 import numpy as np
 import logging
 from collections import namedtuple
+
+from vnep_approx import treewidth_based_fog_model, greedy_border_allocation
+from . import solution_reducer
+
 try:
     import cPickle as pickle
 except ImportError:
@@ -58,7 +62,8 @@ boxplot_shown_text = dict(
     edge_resource_factor="ERF",
     best_fractional_cost="Fractional cost",
     max_node_load="Max node load ratio",
-    max_edge_load="Max edge load ratio"
+    max_edge_load="Max edge load ratio",
+    cost="Cost"
 )
 
 
@@ -213,6 +218,8 @@ class BoxPlotter(object):
     def collect_data_for_scenario_ids(self, scenario_id_list, reduced_result_key):
         # we are not prepared for multiple algorithms...
         alg_result_dict = self.reduced_scenario_solution_storage.algorithm_scenario_solution_dictionary
+        # TODO: add checking of reduced_result_key and algorithm ID matching
+        self.check_key_algo_conformity(alg_result_dict, reduced_result_key)
         if len(alg_result_dict) > 1:
             raise NotImplementedError("Algorithm result dictionary for multiple elements is not implemented: {}".format(alg_result_dict))
         reduced_result_dict = alg_result_dict.values()[0]
@@ -234,3 +241,12 @@ class BoxPlotter(object):
                 # we do not want these to affect the feasibility ratio
                 number_of_found_results -= 1
         return values_to_aggregate, infeasible_count, number_of_found_results
+
+    def check_key_algo_conformity(self, alg_result_dict, reduced_result_key):
+        alg_id = alg_result_dict.keys()[0]
+        if alg_id == treewidth_based_fog_model.RandRoundSepLPOptDynVMPCollectionForFogModel.ALGORITHM_ID:
+            assert reduced_result_key in solution_reducer.SepLPCostVariantSingleReducedResult._fields
+        elif alg_id == greedy_border_allocation.GreedyBorderAllocationForFogModel.ALGORITHM_ID:
+            assert reduced_result_key in solution_reducer.GreedyBorderAllocationReducedResult._fields
+        else:
+            raise ValueError("Unknown reduced result key")
