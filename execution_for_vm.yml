@@ -1,0 +1,23 @@
+SCENARIO_INPUT_PICKLE: "scenario_multi_sp_n10-60_seed10.pickle"
+RESULT_OUTPUT_PICKLE:  "scenario_multi_sp_n10-60_seed10_result.pickle"
+
+RUN_PARAMETERS:
+    - ALGORITHM:
+        ID: RandRoundSepLPOptDynVMPCollectionForFogModel
+        
+        GUROBI_PARAMETERS:
+          threads: [1]
+          numericfocus: [3]
+       
+        ALGORITHM_PARAMETERS:
+          rounding_order_list : [ !!python/tuple ["NONE"]]
+          lp_recomputation_mode_list : [ !!python/tuple ["NONE"]]
+          lp_relative_quality : [0.001]
+          rounding_samples_per_lp_recomputation_mode : [ !!python/tuple [ !!python/tuple ["NONE", 500] ] ]
+          number_initial_mappings_to_compute : [100]
+          number_further_mappings_to_add : [50]
+          link_capacity_violation_ratio: [2.0]
+          node_capacity_violation_ratio: [2.0]
+          allow_resource_capacity_violations: [True]
+          restrict_edge_mapping_to_fixed_paths: [True]
+
