@@ -28,7 +28,7 @@ try:
 except ImportError:
     import pickle
 
-from vnep_approx import treewidth_based_fog_model
+from vnep_approx import treewidth_based_fog_model, greedy_border_allocation
 from alib import util, solutions
 
 
@@ -48,6 +48,16 @@ SepLPCostVariantSingleReducedResult = namedtuple(
         "max_edge_load",
         "max_node_load"
     ])
+
+
+GreedyBorderAllocationReducedResult = namedtuple(
+    "GreedyBorderAllocationReducedResult",
+    [
+        "feasible",
+        "cost",
+        "total_runtime"
+    ]
+)
 
 
 class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
@@ -77,12 +87,13 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
         sss.scenario_parameter_container.scenario_list = None
         sss.scenario_parameter_container.scenario_triple = None
 
-        for alg, scenario_solution_dict in sss.algorithm_scenario_solution_dictionary.iteritems():
-            self.logger.info(".. Reducing results of algorithm {}".format(alg))
+        for alg_id, scenario_solution_dict in sss.algorithm_scenario_solution_dictionary.iteritems():
+            self.logger.info(".. Reducing results of algorithm {}".format(alg_id))
+            # TODO: choose reduction function based on algorithm ID
             for sc_id, ex_param_solution_dict in scenario_solution_dict.iteritems():
                 self.logger.info("   .. handling scenario {}".format(sc_id))
                 for ex_id, result in ex_param_solution_dict.iteritems():
-                    compressed = self.reduce_single_solution(result)
+                    compressed = self.reduce_single_solution(result, alg_id)
                     ex_param_solution_dict[ex_id] = compressed
 
         self.logger.info("Writing result pickle to {}".format(reduced_randround_solutions_output_pickle_path))
@@ -91,8 +102,24 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
         self.logger.info("All done.")
         return sss
 
-    def reduce_single_solution(self, result):
-        assert isinstance(result, treewidth_based_fog_model.RandRoundSepLPOptDynVMPCollectionResultForCostVariant)
+    def reduce_single_solution(self, result, alg_id):
+        if alg_id == treewidth_based_fog_model.RandRoundSepLPOptDynVMPCollectionForFogModel.ALGORITHM_ID:
+            assert isinstance(result, treewidth_based_fog_model.RandRoundSepLPOptDynVMPCollectionResultForCostVariant)
+            return self.reduce_seplp_result(result)
+        elif alg_id == greedy_border_allocation.GreedyBorderAllocationForFogModel.ALGORITHM_ID:
+            assert isinstance(result, greedy_border_allocation.GreedyBorderAllocationResult)
+            return self.reduce_gba_result(result)
+        else:
+            raise ValueError("Unexpected algorithm ID")
+
+    def reduce_gba_result(self, result):
+        compressed = GreedyBorderAllocationReducedResult(feasible=result.feasible,
+                                                         cost=result.cost,
+                                                         total_runtime=result.runtime)
+        self.logger.debug("Reducing result {}".format(result._get_solution_overview()))
+        return compressed
+
+    def reduce_seplp_result(self, result):
         if not result.overall_feasible:
             compressed = SepLPCostVariantSingleReducedResult(feasible=result.overall_feasible,
                                                              preprocess_runtime=0,
