@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-mkdir -p abb_plots
+folder_name=$1
 
-python -m evaluation_fog_model_2019.cli make_box_plot $1 "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/pseudo_random_seed" "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/sensor_actuator_loop_count" "best_integer_cost" --output_plot_file_name "N-to-cost" --output_path `pwd`/abb_plots --show_feasibility
-./move_exp_logs.sh
+mkdir -p ${folder_name}
 
-python -m evaluation_fog_model_2019.cli make_box_plot $1 "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/pseudo_random_seed" "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/sensor_actuator_loop_count" "total_runtime" --output_plot_file_name "N-to-time" --output_path `pwd`/abb_plots --show_feasibility
-./move_exp_logs.sh
+for p in total_runtime best_integer_cost max_edge_load max_node_load;
+do
+    python -m evaluation_fog_model_2019.cli make_box_plot $2 "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/pseudo_random_seed"\
+            "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/sensor_actuator_loop_count"\
+            $p --output_plot_file_name "N-to-$p" --output_path `pwd`/$1 --show_feasibility
+        for file in ${ALIB_EXPERIMENT_HOME}/log/*; 	do mv $file ${folder_name} ; done
+done
