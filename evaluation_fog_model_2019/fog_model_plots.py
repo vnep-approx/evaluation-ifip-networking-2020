@@ -206,14 +206,14 @@ class BoxPlotter(object):
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
 
         if self.show_feasibility:
-            ax.text(0.0, 1.05, 'Feasibility', horizontalalignment='center',
-                    transform=ax.get_xaxis_transform())
+            ax.text(0.0, 1.05, 'Feasib.', horizontalalignment='center',
+                    transform=ax.get_xaxis_transform(), fontsize=9)
             for x_tick, plot_data_tuple in zip(pos, x_tick_with_values_sorted):
                 infeasible_count = plot_data_tuple[1][1]
                 found_sol_count = plot_data_tuple[1][2]
                 feasibility = calc_feas(infeasible_count, found_sol_count)
                 ax.text(x_tick, 1.05, str(int(np.round(feasibility * 100)))+'%', horizontalalignment='center',
-                        transform=ax.get_xaxis_transform())
+                        transform=ax.get_xaxis_transform(), fontsize=9)
 
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
 
