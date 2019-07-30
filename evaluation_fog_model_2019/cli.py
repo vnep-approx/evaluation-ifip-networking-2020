@@ -76,7 +76,7 @@ def reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant(input_pickle_file, output
 @click.option('--log_level_print', type=click.STRING, default="info", help="log level for stdout")
 @click.option('--log_level_file', type=click.STRING, default="debug", help="log level for log file")
 @click.option('--show_feasibility', is_flag=True, default=False, help="Whether to show feasibility percentages on top of boxplots")
-@click.option('--scenario_range', type=click.STRING, default='', help="Range of scenarios to use for plot e.g. 0-14")
+@click.option('--scenario_range', type=click.STRING, default='', help="Range of scenarios to use for plot e.g. 0-14,30-44")
 def make_box_plot(reduced_solutions_input_pickle_name,
                   config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
                   output_plot_file_name, output_path, output_filetype, log_level_print, log_level_file, show_feasibility, scenario_range):

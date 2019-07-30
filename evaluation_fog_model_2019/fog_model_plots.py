@@ -144,9 +144,11 @@ class BoxPlotter(object):
         scenario_id_dict_for_aggregation = dict(extract_value_from_embedded_dict(spc.scenario_parameter_dict,
                                                                             config_param_path_for_aggregate))
         if scenario_range != '':
-            start = int(scenario_range.split('-')[0])
-            stop = int(scenario_range.split('-')[1])
-            self.scenario_range = [s for s in range(start, stop+1)]
+            self.scenario_range = []
+            for single_range in scenario_range.split(','):
+                start = int(single_range.split('-')[0])
+                stop = int(single_range.split('-')[1])
+                self.scenario_range.extend([s for s in range(start, stop+1)])
             self.logger.info("Using scenarios only: {}".format(self.scenario_range))
         self.logger.info("Aggregating over parameter to scenario ID dictionary {}".format(scenario_id_dict_for_aggregation))
         there_is_at_least_one_left = {k: len(v)>0 for k, v in scenario_id_dict_for_aggregation.items()}
