@@ -97,7 +97,8 @@ class BoxPlotter(object):
     def __init__(self, reduced_solutions_input_pickle_name,
                           output_plot_file_name=None,
                           output_path=None,
-                          output_filetype="png", show_feasibility=True):
+                          output_filetype="png", show_feasibility=True,
+                          axis_tick_rarity=1):
         self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True,
                                       print_level=logging.DEBUG)
 
@@ -124,6 +125,7 @@ class BoxPlotter(object):
             self.reduced_scenario_solution_storage = pickle.load(input_file)
         self.show_feasibility = show_feasibility
         self.scenario_range = None
+        self.axis_tick_rarity = axis_tick_rarity
 
     def get_scenario_x_tick_label(self, scenario_id, config_param_path_for_x_axis):
         config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container \
@@ -132,7 +134,8 @@ class BoxPlotter(object):
                                                         config_param_path_for_x_axis)
         return x_tick_label
 
-    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot, scenario_range):
+    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
+                          scenario_range):
 
         spc = self.reduced_scenario_solution_storage.scenario_parameter_container
         config_path_list = config_param_path_for_aggregate.split('/')
@@ -201,7 +204,13 @@ class BoxPlotter(object):
         fig, ax = plt.subplots()
         pos = np.array(range(len(values_to_plot))) + 1
         ax.boxplot(values_to_plot, positions=pos, whis=1.5)
-        ax.set_xticklabels(map(lambda t: t[0], x_tick_with_values_sorted))
+        x_tick_labels = map(lambda t: t[0], x_tick_with_values_sorted)
+        tick_num = 0
+        for idx, tick in enumerate(x_tick_labels):
+            if tick_num % self.axis_tick_rarity != 0:
+                x_tick_labels[idx] = ''
+            tick_num += 1
+        ax.set_xticklabels(x_tick_labels)
         ax.set_xlabel(boxplot_shown_text[internal_xaxis_name])
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
 

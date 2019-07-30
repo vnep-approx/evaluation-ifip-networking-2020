@@ -77,17 +77,20 @@ def reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant(input_pickle_file, output
 @click.option('--log_level_file', type=click.STRING, default="debug", help="log level for log file")
 @click.option('--show_feasibility', is_flag=True, default=False, help="Whether to show feasibility percentages on top of boxplots")
 @click.option('--scenario_range', type=click.STRING, default='', help="Range of scenarios to use for plot e.g. 0-14,30-44")
+@click.option('--axis_tick_rarity', type=click.INT, default=1, help="Controls how rare the tick marks should be shown")
 def make_box_plot(reduced_solutions_input_pickle_name,
                   config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
-                  output_plot_file_name, output_path, output_filetype, log_level_print, log_level_file, show_feasibility, scenario_range):
+                  output_plot_file_name, output_path, output_filetype, log_level_print, log_level_file, show_feasibility, scenario_range,
+                  axis_tick_rarity):
     util.ExperimentPathHandler.initialize(check_emptiness_log=False, check_emptiness_output=False)
     log_file = os.path.join(util.ExperimentPathHandler.LOG_DIR,
                             "plotter_{}_{}.log".format(os.getpid(),
                                                        os.path.basename(reduced_solutions_input_pickle_name)))
     initialize_logger(log_file, log_level_print, log_level_file)
     plotter = fog_model_plots.BoxPlotter(reduced_solutions_input_pickle_name,
-                                         output_plot_file_name, output_path, output_filetype, show_feasibility)
-    plotter.plot_reduced_data(config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot, scenario_range)
+                                         output_plot_file_name, output_path, output_filetype, show_feasibility, axis_tick_rarity)
+    plotter.plot_reduced_data(config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
+                              scenario_range)
 
 
 if __name__ == '__main__':
