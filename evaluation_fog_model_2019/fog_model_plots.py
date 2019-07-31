@@ -98,7 +98,7 @@ class BoxPlotter(object):
                           output_plot_file_name=None,
                           output_path=None,
                           output_filetype="png", show_feasibility=True,
-                          axis_tick_rarity=1):
+                          axis_tick_rarity=1, execution_id_to_plot=0):
         self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True,
                                       print_level=logging.DEBUG)
 
@@ -126,6 +126,7 @@ class BoxPlotter(object):
         self.show_feasibility = show_feasibility
         self.scenario_range = None
         self.axis_tick_rarity = axis_tick_rarity
+        self.execution_id_to_plot = execution_id_to_plot
 
     def get_scenario_x_tick_label(self, scenario_id, config_param_path_for_x_axis):
         config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container \
@@ -239,12 +240,15 @@ class BoxPlotter(object):
         number_of_found_results = len(scenario_id_list)
         for sc_id in scenario_id_list:
             if sc_id in reduced_result_dict:
-                # TODO: only one execution id is considered, we might aggregate for all execution ID-s?
-                red_res = reduced_result_dict[sc_id][0]
-                if red_res.feasible:
-                    values_to_aggregate.append(getattr(red_res, reduced_result_key))
+                if self.execution_id_to_plot in reduced_result_dict[sc_id]:
+                    red_res = reduced_result_dict[sc_id][0]
+                    if red_res.feasible:
+                        values_to_aggregate.append(getattr(red_res, reduced_result_key))
+                    else:
+                        infeasible_count += 1
                 else:
-                    infeasible_count += 1
+                    raise ValueError("Specified execution ID {} not found, possible values in current input: {}".
+                                     format(self.execution_id_to_plot, reduced_result_dict.keys()))
             else:
                 # it might happen when we executed to scenarios in two batches
                 self.logger.warn("Reduced solution not found for scenario number {}, skipping "
