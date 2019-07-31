@@ -63,7 +63,8 @@ boxplot_shown_text = dict(
     best_fractional_cost="Fractional cost",
     max_node_load="Max node load ratio",
     max_edge_load="Max edge load ratio",
-    cost="Cost"
+    cost="Cost",
+    relative_cost="Relative cost"
 )
 
 
@@ -241,7 +242,7 @@ class BoxPlotter(object):
         for sc_id in scenario_id_list:
             if sc_id in reduced_result_dict:
                 if self.execution_id_to_plot in reduced_result_dict[sc_id]:
-                    red_res = reduced_result_dict[sc_id][0]
+                    red_res = reduced_result_dict[sc_id][self.execution_id_to_plot]
                     if red_res.feasible:
                         values_to_aggregate.append(getattr(red_res, reduced_result_key))
                     else:

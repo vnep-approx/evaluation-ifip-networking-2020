@@ -46,7 +46,8 @@ SepLPCostVariantSingleReducedResult = namedtuple(
         "best_integer_cost",
         "best_fractional_cost",
         "max_edge_load",
-        "max_node_load"
+        "max_node_load",
+        "relative_cost"
     ])
 
 
@@ -129,7 +130,8 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                              best_fractional_cost=0,
                                                              total_runtime=0,
                                                              max_edge_load=0,
-                                                             max_node_load=0)
+                                                             max_node_load=0,
+                                                             relative_cost=0)
         else:
             best_solution = None
             # 'identifier' is the lp computation and randomization order methods tuple.
@@ -144,6 +146,11 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
             total_runtime = result.lp_computation_information.time_preprocessing +\
                             result.lp_computation_information.time_optimization + \
                             result.lp_computation_information.time_postprocessing
+            if result.lp_computation_information.status.objValue > 0:
+                positive_fractional_cost = result.lp_computation_information.status.objValue
+            else:
+                positive_fractional_cost = 1e-5
+            relative_cost = best_solution.cost / positive_fractional_cost
             compressed = SepLPCostVariantSingleReducedResult(feasible=result.overall_feasible,
                                                              preprocess_runtime=result.lp_computation_information.time_preprocessing,
                                                              optimization_runtime=result.lp_computation_information.time_optimization,
@@ -152,6 +159,7 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                              best_fractional_cost=result.lp_computation_information.status.objValue,
                                                              total_runtime=total_runtime,
                                                              max_edge_load=best_solution.max_edge_load,
-                                                             max_node_load=best_solution.max_node_load)
+                                                             max_node_load=best_solution.max_node_load,
+                                                             relative_cost=relative_cost)
         self.logger.debug("Extracted reduced result: {}".format(compressed))
         return compressed
