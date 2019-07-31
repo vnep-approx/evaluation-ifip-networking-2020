@@ -198,14 +198,18 @@ class BoxPlotter(object):
 
     def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
         self.logger.info("Plotting data: {}".format(x_axis_to_aggregate_data))
+        all_fontsize = 20
         # sort the data to be plotted by their x tick values
         x_tick_with_values_sorted = sorted(x_axis_to_aggregate_data.iteritems(),
                                            key=lambda t: t[0])
         # lists of values for each box
         values_to_plot = map(lambda t: t[1][0], x_tick_with_values_sorted)
         fig, ax = plt.subplots()
+        fig.subplots_adjust(bottom=(all_fontsize-1)/100.0, left=(all_fontsize-2)/100.0)
+        ax.tick_params(labelsize=all_fontsize)
         pos = np.array(range(len(values_to_plot))) + 1
-        ax.boxplot(values_to_plot, positions=pos, whis=1.5)
+        ax.boxplot(values_to_plot, positions=pos, whis=1.5,
+                   boxprops={'linewidth': 2}, medianprops={'linewidth': 3}, whiskerprops={'linewidth': 1.8})
         x_tick_labels = map(lambda t: t[0], x_tick_with_values_sorted)
         tick_num = 0
         for idx, tick in enumerate(x_tick_labels):
@@ -213,18 +217,19 @@ class BoxPlotter(object):
                 x_tick_labels[idx] = ''
             tick_num += 1
         ax.set_xticklabels(x_tick_labels)
-        ax.set_xlabel(boxplot_shown_text[internal_xaxis_name])
-        ax.set_ylabel(boxplot_shown_text[internal_yaxis_name])
+        ax.set_xlabel(boxplot_shown_text[internal_xaxis_name], fontsize=all_fontsize)
+        ax.set_ylabel(boxplot_shown_text[internal_yaxis_name], fontsize=all_fontsize)
+
 
         if self.show_feasibility:
             ax.text(0.0, 1.05, 'Feasib.', horizontalalignment='center',
-                    transform=ax.get_xaxis_transform(), fontsize=9)
+                    transform=ax.get_xaxis_transform(), fontsize=14)
             for x_tick, plot_data_tuple in zip(pos, x_tick_with_values_sorted):
                 infeasible_count = plot_data_tuple[1][1]
                 found_sol_count = plot_data_tuple[1][2]
                 feasibility = calc_feas(infeasible_count, found_sol_count)
                 ax.text(x_tick, 1.05, str(int(np.round(feasibility * 100)))+'%', horizontalalignment='center',
-                        transform=ax.get_xaxis_transform(), fontsize=9)
+                        transform=ax.get_xaxis_transform(), fontsize=14)
 
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
 

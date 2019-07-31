@@ -9,6 +9,6 @@ for p in total_runtime best_fractional_cost best_integer_cost max_edge_load \
 do
     python -m evaluation_fog_model_2019.cli make_box_plot $2 "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed"\
      "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" $p --output_plot_file_name \
-     "Substrate_size-to-$p" --output_path `pwd`/${folder_name} --show_feasibility --axis_tick_rarity 2;
+     "Substrate_size-to-$p" --output_path `pwd`/${folder_name} --show_feasibility --axis_tick_rarity 1 --output_filetype pdf ;
     for file in ${ALIB_EXPERIMENT_HOME}/log/*; 	do mv $file ${folder_name} ; done
 done
