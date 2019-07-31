@@ -1,5 +1,5 @@
-SCENARIO_INPUT_PICKLE: "scenario_multi_sp_n10-60_seed10.pickle"
-RESULT_OUTPUT_PICKLE:  "scenario_multi_sp_n10-60_seed10_result.pickle"
+SCENARIO_INPUT_PICKLE: "TBA"
+RESULT_OUTPUT_PICKLE:  "TBA"
 
 RUN_PARAMETERS:
     - ALGORITHM:
@@ -18,7 +18,7 @@ RUN_PARAMETERS:
           number_further_mappings_to_add : [50]
           link_capacity_violation_ratio: [2.0]
           node_capacity_violation_ratio: [5.0]
-          rounding_solution_quality: [20.0]
+          rounding_solution_quality: [2.0]
           allow_resource_capacity_violations: [True]
           restrict_edge_mapping_to_fixed_paths: [True, False]
 

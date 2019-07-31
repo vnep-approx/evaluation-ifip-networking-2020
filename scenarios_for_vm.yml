@@ -17,7 +17,7 @@ request_generation:
 substrate_generation:
     - substrates:
         SyntheticCactusSubstrateGenerator:
-            node_count: [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+            node_count: [10, 20, 30, 40, 50, 60]
             pseudo_random_seed: [1]
             cycle_tree_ratio: [0.6]
             cycle_count_ratio: [0.2]
