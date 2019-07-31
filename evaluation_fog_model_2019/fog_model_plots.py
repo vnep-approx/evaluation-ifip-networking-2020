@@ -50,7 +50,7 @@ AggregatedData = namedtuple(
 )
 
 # maps from reduced key data or config file data to text which should be shown.
-boxplot_shown_text = dict(
+boxplot_shown_text_ = dict(
     best_integer_cost="Cost",
     total_runtime="Total running time [s]",
     preprocess_runtime="Model creation time [s]",
@@ -65,6 +65,23 @@ boxplot_shown_text = dict(
     max_edge_load="Max edge load ratio",
     cost="Cost",
     relative_cost="Relative cost"
+)
+
+boxplot_shown_text = dict(
+    best_integer_cost="VNEP/FAAP cost",
+    total_runtime="VNEP/FAAP Total running time",
+    preprocess_runtime="VNEP/FAAP Model creation time",
+    optimization_runtime="VNEP/FAAP Optimization time",
+    postprocess_runtime="VNEP/FAAP Rand. Rounding time",
+    sensor_actuator_loop_count="N",
+    node_count="Substrate network node count",
+    node_resource_factor="NRF",
+    edge_resource_factor="ERF",
+    best_fractional_cost="VNEP/FAAP Fractional cost",
+    max_node_load="VNEP/FAAP Max node load ratio",
+    max_edge_load="VNEP/FAAP Max edge load ratio",
+    cost="Cost",
+    relative_cost="VNEP/FAAP Relative cost"
 )
 
 
@@ -99,47 +116,50 @@ class BoxPlotter(object):
                           output_plot_file_name=None,
                           output_path=None,
                           output_filetype="png", show_feasibility=True,
-                          axis_tick_rarity=1, execution_id_to_plot=0):
+                          axis_tick_rarity=1, execution_id_to_plot=0,
+                          reduced_solutions_input_pickle_name_relative_to=None):
         self.logger = util.get_logger(self.__class__.__name__, make_file=False, propagate=True,
                                       print_level=logging.DEBUG)
+        self.reduced_scenario_solution_storage_list = []
+        pickle_names = [reduced_solutions_input_pickle_name]
+        if reduced_solutions_input_pickle_name_relative_to is not None:
+            pickle_names.append(reduced_solutions_input_pickle_name_relative_to)
+        for pickle_name in pickle_names:
+            reduced_solutions_input_pickle_path = os.path.join(
+                util.ExperimentPathHandler.INPUT_DIR,
+                pickle_name
+            )
 
-        reduced_solutions_input_pickle_path = os.path.join(
-            util.ExperimentPathHandler.INPUT_DIR,
-            reduced_solutions_input_pickle_name
-        )
+            if output_plot_file_name is None:
+                self.full_output_filename = os.path.basename(reduced_solutions_input_pickle_path).split(".")[0] + \
+                                       "_plotted." + output_filetype
+            else:
+                self.full_output_filename = output_plot_file_name + "." + output_filetype
+            if output_path is None:
+                self.output_path = util.ExperimentPathHandler.OUTPUT_DIR
+            else:
+                self.output_path = output_path
 
-        if output_plot_file_name is None:
-            self.full_output_filename = os.path.basename(reduced_solutions_input_pickle_path).split(".")[0] + \
-                                   "_plotted." + output_filetype
-        else:
-            self.full_output_filename = output_plot_file_name + "." + output_filetype
-        if output_path is None:
-            self.output_path = util.ExperimentPathHandler.OUTPUT_DIR
-        else:
-            self.output_path = output_path
+            self.logger.info("\nWill read from ..\n\t{} \n\t\tand save plot with name {} into\n\t{}\n".
+                        format(reduced_solutions_input_pickle_path, self.full_output_filename, self.output_path))
 
-        self.logger.info("\nWill read from ..\n\t{} \n\t\tand save plot with name {} into\n\t{}\n".
-                    format(reduced_solutions_input_pickle_path, self.full_output_filename, self.output_path))
-
-        self.logger.info("Reading pickle file at {}".format(reduced_solutions_input_pickle_path))
-        with open(reduced_solutions_input_pickle_path, "rb") as input_file:
-            self.reduced_scenario_solution_storage = pickle.load(input_file)
+            self.logger.info("Reading pickle file at {}".format(reduced_solutions_input_pickle_path))
+            with open(reduced_solutions_input_pickle_path, "rb") as input_file:
+                self.reduced_scenario_solution_storage_list.append(pickle.load(input_file))
         self.show_feasibility = show_feasibility
         self.scenario_range = None
         self.axis_tick_rarity = axis_tick_rarity
         self.execution_id_to_plot = execution_id_to_plot
 
-    def get_scenario_x_tick_label(self, scenario_id, config_param_path_for_x_axis):
-        config_dict_of_aggregated_scenario = self.reduced_scenario_solution_storage.scenario_parameter_container \
-            .scenario_parameter_combination_list[scenario_id]
+    def get_scenario_x_tick_label(self, spc, scenario_id, config_param_path_for_x_axis):
+        config_dict_of_aggregated_scenario = spc.scenario_parameter_combination_list[scenario_id]
         x_tick_label = extract_value_from_embedded_dict(config_dict_of_aggregated_scenario,
                                                         config_param_path_for_x_axis)
         return x_tick_label
 
-    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
+    def collect_plot_data(self, reduced_scenario_solution_storage, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
                           scenario_range):
-
-        spc = self.reduced_scenario_solution_storage.scenario_parameter_container
+        spc = reduced_scenario_solution_storage.scenario_parameter_container
         config_path_list = config_param_path_for_aggregate.split('/')
         if len(config_path_list) < 2:
             raise ValueError("Config param path {} must be at least 2 long, e.g. "
@@ -170,9 +190,9 @@ class BoxPlotter(object):
                             continue
                     if x_tick_label is None:
                         # bind which x tick label value we are looking for
-                        x_tick_label = self.get_scenario_x_tick_label(sc_id, config_param_path_for_x_axis)
+                        x_tick_label = self.get_scenario_x_tick_label(spc, sc_id, config_param_path_for_x_axis)
                         scenario_ids_to_aggregate.append(sc_id)
-                    elif x_tick_label == self.get_scenario_x_tick_label(sc_id, config_param_path_for_x_axis):
+                    elif x_tick_label == self.get_scenario_x_tick_label(spc, sc_id, config_param_path_for_x_axis):
                         # only proceed if this is the same value
                         scenario_ids_to_aggregate.append(sc_id)
                     else:
@@ -181,7 +201,7 @@ class BoxPlotter(object):
                 else:
                     there_is_at_least_one_left[aggregation_value] = False
             if len(scenario_ids_to_aggregate) > 0:
-                plot_data, infeasible_count, found_sol_count = self.collect_data_for_scenario_ids(scenario_ids_to_aggregate,
+                plot_data, infeasible_count, found_sol_count = self.collect_data_for_scenario_ids(reduced_scenario_solution_storage, scenario_ids_to_aggregate,
                                                                                       reduced_result_key=reduced_result_key_to_plot)
                 self.logger.debug("Feasibility ratio for scenario ids {}: {}".format(scenario_ids_to_aggregate,
                                                                                      calc_feas(infeasible_count, found_sol_count)))
@@ -194,7 +214,31 @@ class BoxPlotter(object):
                     x_axis_to_aggregate_data[x_tick_label][0].extend(plot_data)
                     x_axis_to_aggregate_data[x_tick_label][1] += infeasible_count
                     x_axis_to_aggregate_data[x_tick_label][2] += found_sol_count
-        self.plot_from_aggregated_data(x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot)
+        return x_axis_to_aggregate_data, config_param_path_for_x_axis.split('/')[-1], reduced_result_key_to_plot
+
+    def plot_reduced_data(self, config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
+                          scenario_range):
+        reduced_scenario_solution_storage = self.reduced_scenario_solution_storage_list[0]
+        x_axis_to_aggregate_data, b, c = self.collect_plot_data(reduced_scenario_solution_storage,
+                                                                config_param_path_for_aggregate,
+                                                                config_param_path_for_x_axis,
+                                                                reduced_result_key_to_plot,
+                                                                scenario_range)
+        if len(self.reduced_scenario_solution_storage_list) != 1:
+            reduced_scenario_solution_storage = self.reduced_scenario_solution_storage_list[1]
+            relative_to_x_axis_to_aggregate_data, b, c = self.collect_plot_data(reduced_scenario_solution_storage,
+                                                                                 config_param_path_for_aggregate,
+                                                                                 config_param_path_for_x_axis,
+                                                                                 reduced_result_key_to_plot,
+                                                                                 scenario_range)
+            for xtick_label, value_list in relative_to_x_axis_to_aggregate_data.iteritems():
+                first_plot_data = x_axis_to_aggregate_data[xtick_label][0]
+                second_plot_data = value_list[0]
+                # hopefully the order of the values are preserved between the two readings....
+                x_axis_to_aggregate_data[xtick_label][0] = map(lambda t: t[0]/t[1],
+                                                               zip(first_plot_data, second_plot_data))
+        # there is always at least 1 element in the 'for'
+        self.plot_from_aggregated_data(x_axis_to_aggregate_data, b, c)
 
     def plot_from_aggregated_data(self, x_axis_to_aggregate_data, internal_xaxis_name, internal_yaxis_name):
         self.logger.info("Plotting data: {}".format(x_axis_to_aggregate_data))
@@ -233,9 +277,9 @@ class BoxPlotter(object):
 
         plt.savefig(os.path.join(self.output_path, self.full_output_filename))
 
-    def collect_data_for_scenario_ids(self, scenario_id_list, reduced_result_key):
+    def collect_data_for_scenario_ids(self, reduced_scenario_solution_storage, scenario_id_list, reduced_result_key):
         # we are not prepared for multiple algorithms...
-        alg_result_dict = self.reduced_scenario_solution_storage.algorithm_scenario_solution_dictionary
+        alg_result_dict = reduced_scenario_solution_storage.algorithm_scenario_solution_dictionary
         # TODO: add checking of reduced_result_key and algorithm ID matching
         self.check_key_algo_conformity(alg_result_dict, reduced_result_key)
         if len(alg_result_dict) > 1:

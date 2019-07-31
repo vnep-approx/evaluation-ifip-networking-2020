@@ -79,10 +79,11 @@ def reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant(input_pickle_file, output
 @click.option('--scenario_range', type=click.STRING, default='', help="Range of scenarios to use for plot e.g. 0-14,30-44")
 @click.option('--axis_tick_rarity', type=click.INT, default=1, help="Controls how rare the tick marks should be shown")
 @click.option('--execution_id', type=click.INT, default=0, help="Execution ID to plot")
+@click.option('--reduced_solutions_input_pickle_name_relative_to', type=click.Path(), default=None, help="Divide all plotted values of the reduced_solutions_input_pickle_name by the values of this pickle file")
 def make_box_plot(reduced_solutions_input_pickle_name,
                   config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
                   output_plot_file_name, output_path, output_filetype, log_level_print, log_level_file, show_feasibility, scenario_range,
-                  axis_tick_rarity, execution_id):
+                  axis_tick_rarity, execution_id, reduced_solutions_input_pickle_name_relative_to):
     util.ExperimentPathHandler.initialize(check_emptiness_log=False, check_emptiness_output=False)
     log_file = os.path.join(util.ExperimentPathHandler.LOG_DIR,
                             "plotter_{}_{}.log".format(os.getpid(),
@@ -90,9 +91,11 @@ def make_box_plot(reduced_solutions_input_pickle_name,
     initialize_logger(log_file, log_level_print, log_level_file)
     plotter = fog_model_plots.BoxPlotter(reduced_solutions_input_pickle_name,
                                          output_plot_file_name, output_path, output_filetype, show_feasibility, axis_tick_rarity,
-                                         execution_id)
+                                         execution_id, reduced_solutions_input_pickle_name_relative_to)
     plotter.plot_reduced_data(config_param_path_for_aggregate, config_param_path_for_x_axis, reduced_result_key_to_plot,
                               scenario_range)
+
+
 
 
 if __name__ == '__main__':
