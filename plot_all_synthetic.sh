@@ -9,7 +9,7 @@ do
 
     python -m evaluation_fog_model_2019.cli make_box_plot $2 "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed"\
      "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" $p --output_plot_file_name \
-     "Substrate_size-to-$p" --output_path `pwd`/${folder_name} --show_feasibility;
+     "Substrate_size-to-$p-nrf05" --output_path `pwd`/${folder_name} --show_feasibility --scenario_range 240-319;
     for file in ${ALIB_EXPERIMENT_HOME}/log/*; 	do mv $file ${folder_name} ; done
 
 done

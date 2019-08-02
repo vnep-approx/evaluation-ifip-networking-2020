@@ -18,6 +18,7 @@ RUN_PARAMETERS:
           number_further_mappings_to_add : [50]
           link_capacity_violation_ratio: [2.0]
           node_capacity_violation_ratio: [2.0]
+          rounding_solution_quality: [20.0]
           allow_resource_capacity_violations: [True]
           restrict_edge_mapping_to_fixed_paths: [True]
 

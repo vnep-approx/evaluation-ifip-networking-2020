@@ -50,7 +50,7 @@ AggregatedData = namedtuple(
 )
 
 # maps from reduced key data or config file data to text which should be shown.
-boxplot_shown_text_ = dict(
+boxplot_shown_text_original = dict(
     best_integer_cost="Cost",
     total_runtime="Total running time [s]",
     preprocess_runtime="Model creation time [s]",
@@ -67,12 +67,12 @@ boxplot_shown_text_ = dict(
     relative_cost="Relative cost"
 )
 
-boxplot_shown_text = dict(
+boxplot_shown_text_relative = dict(
     best_integer_cost="VNEP/FAAP cost",
     total_runtime="VNEP/FAAP Total running time",
     preprocess_runtime="VNEP/FAAP Model creation time",
     optimization_runtime="VNEP/FAAP Optimization time",
-    postprocess_runtime="VNEP/FAAP Rand. Rounding time",
+    postprocess_runtime="VNEP/FAAP Rand. Round. time",
     sensor_actuator_loop_count="N",
     node_count="Substrate network node count",
     node_resource_factor="NRF",
@@ -249,7 +249,7 @@ class BoxPlotter(object):
         # lists of values for each box
         values_to_plot = map(lambda t: t[1][0], x_tick_with_values_sorted)
         fig, ax = plt.subplots()
-        fig.subplots_adjust(bottom=(all_fontsize-1)/100.0, left=(all_fontsize-2)/100.0)
+        fig.subplots_adjust(bottom=(all_fontsize-1)/100.0, left=(all_fontsize)/100.0)
         ax.tick_params(labelsize=all_fontsize)
         pos = np.array(range(len(values_to_plot))) + 1
         ax.boxplot(values_to_plot, positions=pos, whis=1.5,
@@ -261,6 +261,9 @@ class BoxPlotter(object):
                 x_tick_labels[idx] = ''
             tick_num += 1
         ax.set_xticklabels(x_tick_labels)
+        boxplot_shown_text = boxplot_shown_text_original
+        if len(self.reduced_scenario_solution_storage_list) != 1:
+            boxplot_shown_text = boxplot_shown_text_relative
         ax.set_xlabel(boxplot_shown_text[internal_xaxis_name], fontsize=all_fontsize)
         ax.set_ylabel(boxplot_shown_text[internal_yaxis_name], fontsize=all_fontsize)
 
@@ -280,7 +283,7 @@ class BoxPlotter(object):
     def collect_data_for_scenario_ids(self, reduced_scenario_solution_storage, scenario_id_list, reduced_result_key):
         # we are not prepared for multiple algorithms...
         alg_result_dict = reduced_scenario_solution_storage.algorithm_scenario_solution_dictionary
-        # TODO: add checking of reduced_result_key and algorithm ID matching
+        # add checking of reduced_result_key and algorithm ID matching
         self.check_key_algo_conformity(alg_result_dict, reduced_result_key)
         if len(alg_result_dict) > 1:
             raise NotImplementedError("Algorithm result dictionary for multiple elements is not implemented: {}".format(alg_result_dict))

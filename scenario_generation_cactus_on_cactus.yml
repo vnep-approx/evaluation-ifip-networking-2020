@@ -1,0 +1,32 @@
+request_generation:
+    - cactus:
+        CactusRequestGenerator:
+            number_of_requests: [3]
+            branching_distribution: [[0.15,0.5,0.35]]
+            min_number_of_nodes: [3]
+            max_number_of_nodes: [6]
+            layers: [3]
+            probability: [1.0]
+            max_cycles: [9999]
+            iterations: [100]
+            fix_root_mapping: [True]
+            fix_leaf_mapping: [False]
+            node_resource_factor: [0.6, 0.8, 1.0]
+            edge_resource_factor: [1.0, 2.0, 4.0]
+            arbitrary_edge_orientations: [True]
+            normalize: [True]
+
+
+substrate_generation:
+    - substrates:
+        SyntheticCactusSubstrateGenerator:
+            node_count: [5, 6, 7]
+            pseudo_random_seed: [1]
+            cycle_tree_ratio: [0.6]
+            cycle_count_ratio: [0.2]
+            tree_count_ratio: [0.2]
+            node_capacity_interval: [[0.0, 1.0]]
+            link_capacity_interval: [[0.5, 4.0]]
+
+scenario_repetition: 1
+
