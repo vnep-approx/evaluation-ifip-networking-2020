@@ -1,5 +1,13 @@
-Evaluation code and examples for the collaboration with Stefan Schmidt, Yvonne-Anne Pignolet, 
+Evaluation code and examples for the collaboration with Stefan Schmidt, Matthias Rost, Yvonne-Anne Pignolet, 
 Balazs Vass, Balazs Nemeth on reusing the vnep-approx library for the fog model experiments.
+
+# Automatic experiments
+
+setup-run-experiment.sh -- sets up an experiment home, generates, executes the scenarios and reduces the results
+plot_all_from_vm.sh -- plots all supported plots of the evaluations repo #TODO: tweak to the automatic structure
+plot_all_abb.sh -- plots ABB scenario examples (NOT included in paper)
+
+# Example commands and arguments
 
 Commands to run for ABB use case:
 - python -m vnep_approx.cli generate_scenarios abb_scenarios.pickle scenario_generation_abb.yml
