@@ -1,0 +1,283 @@
+/home/ubuntu/fog_model/alib
+
+commit 86b9c0d2ea9c8268e2d94d6b4f1e9e99ae86fff0
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Tue Jul 30 18:20:03 2019 +0200
+
+    Add exclude sensor locations option
+
+commit 324e5446cbfec35f718eab64b11f7f9451123ef9
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Mon Jul 29 11:08:40 2019 +0200
+
+    Add node_cost parameter to ABB use case
+
+commit 51e50e1cc1be8ae8cb9bd0aac3b28bbdb13e22dc
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Sun Jul 28 13:59:28 2019 +0200
+
+    Add multiple reqs with the connected SP def
+
+commit 732fabc4e271bb47d69af7d6b23a2d9fd47235b6
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Sat Jul 27 21:30:54 2019 +0200
+
+    Fix unconnected substrate graph
+
+commit 833c73ce5db1ab19157a02e500a5bb03ba7a6c5a
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Fri Jul 26 16:44:03 2019 +0200
+
+    Add configurable node cost
+
+commit 258569d01589c98f5a06bac2cda3a8d9e845b31e
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Fri Jul 26 11:04:38 2019 +0200
+
+    add normalize parameter to request generator, decrease error waiting time
+
+commit 74147b4586dffebbb8858f58b23ec4afca116206
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Wed Jul 24 19:21:43 2019 +0200
+
+    Add SP generator with new definiton
+
+commit 1f723a599d0dbfc3aa28c001e3bf9b5c44f1913d
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Thu Jul 11 16:37:26 2019 +0200
+
+    Handle processes terminated by os, or outside source
+
+commit 8c3e0325e7e601e3f995b34f2048942fcbcb2aca
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+On branch get_to_know
+Your branch is up-to-date with 'origin/get_to_know'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   setup.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+diff --git a/setup.py b/setup.py
+index 25cd649..4e4f5bf 100644
+--- a/setup.py
++++ b/setup.py
+@@ -8,7 +8,7 @@ install_requires = [
+     "pyyaml",
+     "jsonpickle",
+     "unidecode",
+-    "networkx",
++#    "networkx",
+ ]
+ 
+ setup(
+/home/ubuntu/fog_model/vnep-approx
+
+commit 651360ff2500b1ca8b98f8c586e2bf630bac5c0f
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Wed Jul 31 13:43:10 2019 +0200
+
+    remove verbose logging
+
+commit acde215aa47dfb96d6c413dbb8eac545a6df6ce6
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Wed Jul 31 12:58:08 2019 +0200
+
+    Bugfix at cost calculation of single valid embedding
+
+commit 301b717fc8cdcf72e58242ca8bf98314ee964ec0
+Author: Matthias Rost <mrost@inet.tu-berlin.de>
+Date:   Wed Jul 31 12:09:00 2019 +0200
+
+    detailed debugging of cost computation and minor fix of filtering functionality
+
+commit b30adf6217f173453b227be70c7b6f03e7b44871
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Tue Jul 30 18:20:36 2019 +0200
+
+    Relax allowed nodes constraint
+
+commit 0e85c8aead7a4e8bc2d65f36eb4e4c65835c477d
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Tue Jul 30 12:48:27 2019 +0200
+
+    Implement GBA and solution cost calculation
+
+commit 89e687e8be5a564cb9e76355c477feeb5626d98c
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Tue Jul 30 11:41:58 2019 +0200
+
+    Adapt mapping structure for multiple rquests, TODO: error with app link direction
+
+commit a90745e59efac62c675b3c63e499027be2b73e17
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Tue Jul 30 11:05:44 2019 +0200
+
+    Consistent renaming of GBA variables
+
+commit f47b596e3ffc4d41444569295acf1b4060729d95
+Author: Balazs Nemeth <balazs.nemeth@tmit.bme.hu>
+Date:   Mon Jul 29 16:49:32 2019 +0200
+
+    Adapt GBA result conversion for multiple AppGraphs
+
+commit 884b57a6dc242ce5a4ffd088032172f8eb68979f
+Author: Yvonne-Anne Pignolet <yvonneanne@dfinity.org>
+On branch get_to_know
+Your branch is up-to-date with 'origin/get_to_know'.
+nothing to commit, working directory clean
+/home/ubuntu/fog_model/PACE2017-TrackA
+
+commit 7278390fe81191f238206b822fa2941d068a1214
+Author: Hisao Tamaki <tamaki@cs.meiji.ac.jp>
+Date:   Thu May 25 15:37:13 2017 +0900
+
+    README revised for the final submission
+
+commit 3f17415647ece514b3e25b6bdfa6e82f5b7da7ac
+Merge: 93b237e ae259fc
+Author: hisaotamaki <tamaki@cs.meiji.ac.jp>
+Date:   Wed May 24 17:10:02 2017 +0900
+
+    Merge pull request #3 from TCS-Meiji/heuristic
+    
+    Heuristic
+
+commit ae259fcda253e43851c39ceef7e1e0e895ed0058
+Author: HiromuOhtsuka <multiverse.yume.a12@gmail.com>
+Date:   Wed May 24 15:41:06 2017 +0900
+
+    fixed memory bug
+
+commit 15993ca840dc1b2ff3989ee98d5105e10ae79743
+Author: HiromuOhtsuka <multiverse.yume.a12@gmail.com>
+Date:   Tue May 23 17:41:55 2017 +0900
+
+    removed debug code
+
+commit ad5e730178c1252b6eaa843c22fe5a9d5e17d476
+Author: HiromuOhtsuka <multiverse.yume.a12@gmail.com>
+Date:   Tue May 23 14:36:50 2017 +0900
+
+    fixed bug
+
+commit f77c2d89fb32d8391838ba000826157b871692cf
+Author: HiromuOhtsuka <multiverse.yume.a12@gmail.com>
+Date:   Tue May 23 14:28:57 2017 +0900
+
+    added authors
+
+commit d63521bbe5ef11aa70a4bf7ab61ecedf5155ebc6
+Author: HiromuOhtsuka <multiverse.yume.a12@gmail.com>
+Date:   Tue May 23 14:15:44 2017 +0900
+
+    tw.heuristic package added
+
+commit 93b237ed52867325e610f1566a6aaef7ce511a09
+Merge: fff886b 503251a
+Author: hisaotamaki <tamaki@cs.meiji.ac.jp>
+Date:   Mon May 15 18:24:00 2017 +0900
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   tw-exact
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	tw/exact/Bag.class
+	tw/exact/BlockSieve$1.class
+	tw/exact/BlockSieve$ByteNode.class
+	tw/exact/BlockSieve$IntegerNode.class
+	tw/exact/BlockSieve$LongNode.class
+	tw/exact/BlockSieve$Node.class
+	tw/exact/BlockSieve$ShortNode.class
+	tw/exact/BlockSieve.class
+	tw/exact/Graph.class
+	tw/exact/GreedyDecomposer$1.class
+	tw/exact/GreedyDecomposer$Mode.class
+	tw/exact/GreedyDecomposer.class
+	tw/exact/IODecomposer$Block.class
+	tw/exact/IODecomposer$IBlock.class
+	tw/exact/IODecomposer$Oblock.class
+	tw/exact/IODecomposer$PMC.class
+	tw/exact/IODecomposer.class
+	tw/exact/LayeredSieve.class
+	tw/exact/MainDecomposer.class
+	tw/exact/SafeSeparator$LeftNode.class
+	tw/exact/SafeSeparator$MissingEdge.class
+	tw/exact/SafeSeparator$RightNode.class
+	tw/exact/SafeSeparator.class
+	tw/exact/Separator.class
+	tw/exact/TreeDecomposition.class
+	tw/exact/Unsigned.class
+	tw/exact/XBitSet$AscendingComparator.class
+	tw/exact/XBitSet$CardinalityComparator.class
+	tw/exact/XBitSet$DescendingComparator.class
+	tw/exact/XBitSet.class
+	tw/heuristic/ArraySet$1.class
+	tw/heuristic/ArraySet$2.class
+	tw/heuristic/ArraySet$3.class
+	tw/heuristic/ArraySet.class
+	tw/heuristic/Bag.class
+	tw/heuristic/BlockSieve$1.class
+	tw/heuristic/BlockSieve$ByteNode.class
+	tw/heuristic/BlockSieve$IntegerNode.class
+	tw/heuristic/BlockSieve$LongNode.class
+	tw/heuristic/BlockSieve$Node.class
+	tw/heuristic/BlockSieve$ShortNode.class
+	tw/heuristic/BlockSieve.class
+	tw/heuristic/CPUTimer.class
+	tw/heuristic/CutDecomposer$CutDivide.class
+	tw/heuristic/CutDecomposer$NextBag.class
+	tw/heuristic/CutDecomposer.class
+	tw/heuristic/Graph.class
+	tw/heuristic/GreedyDecomposer$Edge.class
+	tw/heuristic/GreedyDecomposer$Pair.class
+	tw/heuristic/GreedyDecomposer.class
+	tw/heuristic/LayeredSieve.class
+	tw/heuristic/MTDecomposerHeuristic$Block.class
+	tw/heuristic/MTDecomposerHeuristic$MBlock.class
+	tw/heuristic/MTDecomposerHeuristic$MinComparator.class
+	tw/heuristic/MTDecomposerHeuristic$PMC.class
+	tw/heuristic/MTDecomposerHeuristic$TBlock.class
+	tw/heuristic/MTDecomposerHeuristic.class
+	tw/heuristic/MainDecomposer$1.class
+	tw/heuristic/MainDecomposer$2.class
+	tw/heuristic/MainDecomposer$3.class
+	tw/heuristic/MainDecomposer$Mode.class
+	tw/heuristic/MainDecomposer.class
+	tw/heuristic/PathDecomposer.class
+	tw/heuristic/SafeSeparator$1.class
+	tw/heuristic/SafeSeparator$LeftNode.class
+	tw/heuristic/SafeSeparator$MissingEdge.class
+	tw/heuristic/SafeSeparator$RightNode.class
+	tw/heuristic/SafeSeparator$StepsExceededException.class
+	tw/heuristic/SafeSeparator.class
+	tw/heuristic/Separator.class
+	tw/heuristic/TreeDecomposition.class
+	tw/heuristic/Unsigned.class
+	tw/heuristic/VertexSet$Type.class
+	tw/heuristic/VertexSet.class
+	tw/heuristic/XBitSet$AscendingComparator.class
+	tw/heuristic/XBitSet$CardinalityComparator.class
+	tw/heuristic/XBitSet$DescendingComparator.class
+	tw/heuristic/XBitSet.class
+
+no changes added to commit (use "git add" and/or "git commit -a")
+diff --git a/tw-exact b/tw-exact
+old mode 100644
+new mode 100755
+index 471ab91..5aa965e
+--- a/tw-exact
++++ b/tw-exact
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ #
+-java -Xmx30g -Xms30g -Xss10m tw.exact.MainDecomposer
++java -Xmx30g -Xms5g -Xss10m tw.exact.MainDecomposer
