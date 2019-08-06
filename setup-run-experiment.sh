@@ -30,6 +30,7 @@ rm experiment_root/$1/git_statuses.txt
 
 export ALIB_EXPERIMENT_HOME=`pwd`/experiment_root/$1
 printf "ALIB_EXPERIMENT_HOME: ${ALIB_EXPERIMENT_HOME} \n"
+prev_path=`pwd`
 for repo in alib vnep-approx PACE2017-TrackA;
 do
     cd ../${repo}
@@ -39,6 +40,7 @@ do
     git status >> ${ALIB_EXPERIMENT_HOME}/git_statuses.txt
     git diff >> ${ALIB_EXPERIMENT_HOME}/git_statuses.txt
 done
+cd ${prev_path}
 
 cp $2 ${ALIB_EXPERIMENT_HOME}/scenario_generation.yml
 cp $3 ${ALIB_EXPERIMENT_HOME}/execution.yml
