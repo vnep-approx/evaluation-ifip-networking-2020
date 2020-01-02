@@ -64,7 +64,8 @@ boxplot_shown_text_original = dict(
     max_node_load="Max node load ratio",
     max_edge_load="Max edge load ratio",
     cost="Cost",
-    relative_cost="Relative cost"
+    relative_cost="Relative cost",
+    topology="Topology Zoo name"
 )
 
 boxplot_shown_text_relative = dict(
@@ -81,7 +82,8 @@ boxplot_shown_text_relative = dict(
     max_node_load="VNEP/FAAP Max node load ratio",
     max_edge_load="VNEP/FAAP Max edge load ratio",
     cost="Cost",
-    relative_cost="VNEP/FAAP Relative cost"
+    relative_cost="VNEP/FAAP Relative cost",
+    topology="Topology Zoo name"
 )
 
 
@@ -250,7 +252,7 @@ class BoxPlotter(object):
         values_to_plot = map(lambda t: t[1][0], x_tick_with_values_sorted)
         fig, ax = plt.subplots()
         fig.subplots_adjust(bottom=(all_fontsize-1)/100.0, left=(all_fontsize)/100.0)
-        ax.tick_params(labelsize=all_fontsize)
+        ax.tick_params(labelsize=all_fontsize-4)
         pos = np.array(range(len(values_to_plot))) + 1
         ax.boxplot(values_to_plot, positions=pos, whis=1.5,
                    boxprops={'linewidth': 2}, medianprops={'linewidth': 3}, whiskerprops={'linewidth': 1.8})
