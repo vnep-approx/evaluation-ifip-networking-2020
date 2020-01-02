@@ -55,7 +55,7 @@ move_logs_and_output
 
 printf "Executing experiment with config: \n"
 cat ${ALIB_EXPERIMENT_HOME}/execution.yml
-python -m vnep_approx.cli start_experiment ${ALIB_EXPERIMENT_HOME}/execution.yml 0 10000 --concurrent 1 --overwrite_existing_intermediate_solutions --remove_temporary_scenarios --remove_intermediate_solutions
+python -m vnep_approx.cli start_experiment ${ALIB_EXPERIMENT_HOME}/execution.yml 0 10000 --concurrent 1 --overwrite_existing_intermediate_solutions --remove_temporary_scenarios --remove_intermediate_solutions --original_order
 move_logs_and_output
 
 printf "Reducing results into reduced_results.pickle \n"
