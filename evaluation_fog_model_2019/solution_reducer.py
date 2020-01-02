@@ -76,7 +76,7 @@ class RandRoundSepLPOptDynVMPCollectionCostVariantResultReducer(object):
                                                                           file_basename + "_reduced.pickle")
         else:
             reduced_randround_solutions_output_pickle_path = os.path.join(util.ExperimentPathHandler.OUTPUT_DIR,
-                                                                          randround_solutions_input_pickle_name)
+                                                                          reduced_randround_solutions_output_pickle_name)
 
         self.logger.info("\nWill read from ..\n\t{} \n\t\tand store reduced data into\n\t{}\n".format(
             randround_solutions_input_pickle_path, reduced_randround_solutions_output_pickle_path))

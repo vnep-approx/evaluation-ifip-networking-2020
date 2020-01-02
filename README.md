@@ -20,7 +20,7 @@ Commands to run for Synthetic use case:
 Commands reducing the results:
 - python -m evaluation_fog_model_2019.cli reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant abb_scenarios_results.pickle abb_scenarios_results_reduced.pickle
 
-Commands to plot the results:
+Commands to make_and_save_plot the results:
 - python -m evaluation_fog_model_2019.cli make_box_plot abb_scenarios_results_reduced.pickle "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/pseudo_random_seed" "substrate_generation/substrates/ABBUseCaseFogNetworkGenerator/sensor_actuator_loop_count" "best_integer_cost"
 - python -m evaluation_fog_model_2019.cli make_box_plot scenarios_synthetic_small_result_reduced.pickle "request_generation/fog_app/SyntheticSeriesParallelDecomposableRequestGenerator/pseudo_random_seed" "substrate_generation/substrates/SyntheticCactusSubstrateGenerator/node_count" "best_integer_cost" --output_plot_file_name "node_count-to-cost" --output_path /home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/fixed_demand_newcostrr --show_feasibility
 
