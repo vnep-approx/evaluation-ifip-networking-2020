@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-# must be run from a (virtual) python environment, where the alib, and vnep-approx packages are installed.
+# Must be run from a (virtual) python environment, where the alib, and vnep-approx packages are installed.
+# Sets the ALIB_EXPERIMENT_HOME environment variable needed for the framework experiments.
+# Generates the experiment scenarios, executes them, and reduces the results.
 
-# Usage ./setup-run-evaluate.sh <<experiment name>> <<scenario yaml file>> <<execution yaml file>>
+# Usage: ./setup-run-evaluate.sh <<experiment name>> <<scenario yaml file>> <<execution yaml file>>
 
 function move_logs_and_output() {
     cd ${ALIB_EXPERIMENT_HOME}
