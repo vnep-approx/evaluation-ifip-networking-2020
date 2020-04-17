@@ -1,8 +1,0 @@
-SCENARIO_INPUT_PICKLE: "sample_scenarios.pickle"
-RESULT_OUTPUT_PICKLE:  "sample_scenarios_results.pickle"
-
-RUN_PARAMETERS:
-    - ALGORITHM:
-        ID: GreedyBorderAllocationForFogModel
-
-

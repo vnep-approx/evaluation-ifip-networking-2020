@@ -1,5 +1,5 @@
-SCENARIO_INPUT_PICKLE: "scenarios_synthetic_small.pickle"
-RESULT_OUTPUT_PICKLE:  "scenarios_synthetic_small_result.pickle"
+SCENARIO_INPUT_PICKLE: "scenarios.pickle"
+RESULT_OUTPUT_PICKLE:  "results.pickle"
 
 RUN_PARAMETERS:
     - ALGORITHM:
@@ -17,8 +17,9 @@ RUN_PARAMETERS:
           number_initial_mappings_to_compute : [100]
           number_further_mappings_to_add : [50]
           link_capacity_violation_ratio: [2.0]
-          node_capacity_violation_ratio: [2.0]
-          rounding_solution_quality: [20.0]
+          node_capacity_violation_ratio: [5.0]
+          rounding_solution_quality: [2.0]
           allow_resource_capacity_violations: [True]
-          restrict_edge_mapping_to_fixed_paths: [True]
+          restrict_edge_mapping_to_fixed_paths: [False] # [True] for fixed paths, [False] for arbitrary paths
+
 
