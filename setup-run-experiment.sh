@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-# Must be run from a (virtual) python environment, where the alib, and vnep-approx packages are installed.
-# Sets the ALIB_EXPERIMENT_HOME environment variable needed for the framework experiments.
-# Generates the experiment scenarios, executes them, and reduces the results.
+help=$' Script to automate the environment setup, also generates the experiment scenarios, executes them, and reduces the results.
+ Sets the ALIB_EXPERIMENT_HOME environment variable needed for the framework experiments.
+ Must be run from a (virtual) python environment, where the alib, gurobipy and vnep-approx packages are installed.
 
-# Usage: ./setup-run-evaluate.sh <<experiment name>> <<scenario yaml file>> <<execution yaml file>>
+ Usage: ./setup-run-evaluate.sh <<experiment name>> <<scenario yaml file>> <<execution yaml file>>
+ Example: ./setup-run-experiment.sh cleanup_exp results/topology-zoo/scenarios_zoo_trial.yml results/topology-zoo/fixed-routing/execution_zoo_trial_FAAP.yml'
+
+experiment_name=$1
+scenario_yaml=$2
+execution_yaml=$3
+
+if [[ "$@" == *'-h'* ]] || [[ "$@" == *'--help' ]]; then
+    echo "${help}";
+    exit 0;
+fi;
 
 function move_logs_and_output() {
     cd ${ALIB_EXPERIMENT_HOME}
@@ -18,19 +28,19 @@ function move_logs_and_output() {
 	cd -
 }
 
-mkdir -p experiment_root/$1
-mkdir -p experiment_root/$1/input
-mkdir -p experiment_root/$1/output
-mkdir -p experiment_root/$1/log
-mkdir -p experiment_root/$1/old_log
-rm experiment_root/$1/log/*
-rm experiment_root/$1/output/*
-rm experiment_root/$1/input/*
-rm experiment_root/$1/warnings-errors.log
-touch experiment_root/$1/warnings-errors.log
-rm experiment_root/$1/git_statuses.txt
+mkdir -p experiment_root/${experiment_name}
+mkdir -p experiment_root/${experiment_name}/input
+mkdir -p experiment_root/${experiment_name}/output
+mkdir -p experiment_root/${experiment_name}/log
+mkdir -p experiment_root/${experiment_name}/old_log
+rm experiment_root/${experiment_name}/log/*
+rm experiment_root/${experiment_name}/output/*
+rm experiment_root/${experiment_name}/input/*
+rm experiment_root/${experiment_name}/warnings-errors.log
+touch experiment_root/${experiment_name}/warnings-errors.log
+rm experiment_root/${experiment_name}/git_statuses.txt
 
-export ALIB_EXPERIMENT_HOME=`pwd`/experiment_root/$1
+export ALIB_EXPERIMENT_HOME=`pwd`/experiment_root/${experiment_name}
 printf "ALIB_EXPERIMENT_HOME: ${ALIB_EXPERIMENT_HOME} \n"
 prev_path=`pwd`
 for repo in alib vnep-approx PACE2017-TrackA;
@@ -44,11 +54,11 @@ do
 done
 cd ${prev_path}
 
-cp $2 ${ALIB_EXPERIMENT_HOME}/scenario_generation.yml
-cp $3 ${ALIB_EXPERIMENT_HOME}/execution.yml
+cp ${scenario_yaml} ${ALIB_EXPERIMENT_HOME}/scenario_generation.yml
+cp ${execution_yaml} ${ALIB_EXPERIMENT_HOME}/execution.yml
 
-printf "Setup of experiment $1: \n"
-ls -hl experiment_root/$1
+printf "Setup of experiment ${experiment_name}: \n"
+ls -hl experiment_root/${experiment_name}
 
 printf "Generating scenarios with config: \n"
 cat ${ALIB_EXPERIMENT_HOME}/scenario_generation.yml

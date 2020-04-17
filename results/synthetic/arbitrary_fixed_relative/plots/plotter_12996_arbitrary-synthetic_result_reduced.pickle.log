@@ -1,0 +1,52 @@
+INFO       2020-04-17 17:36:42,213  398:root                            	 Initialized Root Logger
+DEBUG      2020-04-17 17:36:42,213  422:BoxPlotter                      	 Created logger BoxPlotter
+INFO       2020-04-17 17:36:42,213  146:BoxPlotter                      	 
+Will read from ..
+	/home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/arbitrary-synthetic_result_reduced.pickle 
+		and save plot with name Substrate_size-to-max_edge_load.pdf into
+	/home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/results/synthetic/arbitrary_fixed_relative/plots
+
+INFO       2020-04-17 17:36:42,213  148:BoxPlotter                      	 Reading pickle file at /home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/arbitrary-synthetic_result_reduced.pickle
+DEBUG      2020-04-17 17:36:42,334  422:alib.scenariogeneration         	 Created logger alib.scenariogeneration
+DEBUG      2020-04-17 17:36:42,338  422:alib.run_experiment             	 Created logger alib.run_experiment
+INFO       2020-04-17 17:36:42,338  146:BoxPlotter                      	 
+Will read from ..
+	/home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-synthetic_result_reduced.pickle 
+		and save plot with name Substrate_size-to-max_edge_load.pdf into
+	/home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/results/synthetic/arbitrary_fixed_relative/plots
+
+INFO       2020-04-17 17:36:42,338  148:BoxPlotter                      	 Reading pickle file at /home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-synthetic_result_reduced.pickle
+INFO       2020-04-17 17:36:42,342  180:BoxPlotter                      	 Aggregating over parameter to scenario ID dictionary {1: set([0, 1, 2, 3, 4, 5]), 2: set([6, 7, 8, 9, 10, 11]), 3: set([12, 13, 14, 15, 16, 17]), 4: set([18, 19, 20, 21, 22, 23]), 5: set([24, 25, 26, 27, 28, 29]), 6: set([32, 33, 34, 35, 30, 31]), 7: set([36, 37, 38, 39, 40, 41]), 8: set([42, 43, 44, 45, 46, 47]), 9: set([48, 49, 50, 51, 52, 53]), 10: set([54, 55, 56, 57, 58, 59])}
+DEBUG      2020-04-17 17:36:42,343  209:BoxPlotter                      	 Feasibility ratio for scenario ids [0, 6, 12, 18, 24, 36, 42, 48, 54]: 1.0
+DEBUG      2020-04-17 17:36:42,343  211:BoxPlotter                      	 Saving plot data [0, 0, 0, 0, 0, 0, 0, 0.06460733200266879, 0.12596779102088534] for x tick label 10
+DEBUG      2020-04-17 17:36:42,343  209:BoxPlotter                      	 Feasibility ratio for scenario ids [1, 7, 13, 19, 25, 37, 43, 49, 55]: 1.0
+DEBUG      2020-04-17 17:36:42,343  211:BoxPlotter                      	 Saving plot data [0.11030404094229597, 0.139441572202241, 0.06781927810117727, 0.154785077677679, 0.16828034252464158, 0.17267681451819064, 0.05899757556943031, 0, 0.06208544909855388] for x tick label 20
+DEBUG      2020-04-17 17:36:42,343  209:BoxPlotter                      	 Feasibility ratio for scenario ids [2, 8, 14, 20, 26, 32, 38, 44, 50, 56]: 1.0
+DEBUG      2020-04-17 17:36:42,343  211:BoxPlotter                      	 Saving plot data [0.1557589701189029, 0.0849052789736985, 0.19432090712942157, 0.11383041133706343, 0.18736295004433148, 0.08582856378911555, 0.2194570684278396, 0.0738725434245388, 0.06605968568205398, 0.06490793211836196] for x tick label 30
+DEBUG      2020-04-17 17:36:42,343  209:BoxPlotter                      	 Feasibility ratio for scenario ids [3, 9, 15, 21, 27, 33, 39, 45, 51, 57]: 1.0
+DEBUG      2020-04-17 17:36:42,343  211:BoxPlotter                      	 Saving plot data [0.32153661836372033, 0.2307520085209973, 0.08544796617972228, 0.21582633501380027, 0.17746360237976794, 0.2148365021395955, 0.3449419479325979, 0.23175085275474624, 0.17812203716813813, 0.17358127096030318] for x tick label 40
+DEBUG      2020-04-17 17:36:42,343  209:BoxPlotter                      	 Feasibility ratio for scenario ids [4, 10, 16, 22, 28, 34, 40, 46, 52, 58]: 1.0
+DEBUG      2020-04-17 17:36:42,344  211:BoxPlotter                      	 Saving plot data [0.33567036136925404, 0.21590286059809977, 0.30791620317394547, 0.2563509818233623, 0.1373607711644471, 0.3115253119059747, 0.26454974168450357, 0.2097616459780146, 0.22361155227731955, 0.31404724871870593] for x tick label 50
+DEBUG      2020-04-17 17:36:42,344  209:BoxPlotter                      	 Feasibility ratio for scenario ids [5, 11, 17, 23, 29, 35, 41, 47, 53, 59]: 0.5
+DEBUG      2020-04-17 17:36:42,344  211:BoxPlotter                      	 Saving plot data [0.32386857719701106, 0.3776227646870495, 0.293167935493067, 0.2924175895801085, 0.2517004238074748] for x tick label 60
+DEBUG      2020-04-17 17:36:42,344  209:BoxPlotter                      	 Feasibility ratio for scenario ids [30]: 1.0
+DEBUG      2020-04-17 17:36:42,344  215:BoxPlotter                      	 Appending plot data [0] for x tick label 10 with existing values: [[0, 0, 0, 0, 0, 0, 0, 0.06460733200266879, 0.12596779102088534], 0, 9]
+DEBUG      2020-04-17 17:36:42,344  209:BoxPlotter                      	 Feasibility ratio for scenario ids [31]: 1.0
+DEBUG      2020-04-17 17:36:42,344  215:BoxPlotter                      	 Appending plot data [0] for x tick label 20 with existing values: [[0.11030404094229597, 0.139441572202241, 0.06781927810117727, 0.154785077677679, 0.16828034252464158, 0.17267681451819064, 0.05899757556943031, 0, 0.06208544909855388], 0, 9]
+INFO       2020-04-17 17:36:42,344  180:BoxPlotter                      	 Aggregating over parameter to scenario ID dictionary {1: set([0, 1, 2, 3, 4, 5]), 2: set([6, 7, 8, 9, 10, 11]), 3: set([12, 13, 14, 15, 16, 17]), 4: set([18, 19, 20, 21, 22, 23]), 5: set([24, 25, 26, 27, 28, 29]), 6: set([32, 33, 34, 35, 30, 31]), 7: set([36, 37, 38, 39, 40, 41]), 8: set([42, 43, 44, 45, 46, 47]), 9: set([48, 49, 50, 51, 52, 53]), 10: set([54, 55, 56, 57, 58, 59])}
+DEBUG      2020-04-17 17:36:42,345  209:BoxPlotter                      	 Feasibility ratio for scenario ids [0, 6, 12, 18, 24, 36, 42, 48, 54]: 1.0
+DEBUG      2020-04-17 17:36:42,345  211:BoxPlotter                      	 Saving plot data [0, 0, 0, 0, 0, 0, 0, 0.06460733200266879, 0.12596779102088534] for x tick label 10
+DEBUG      2020-04-17 17:36:42,345  209:BoxPlotter                      	 Feasibility ratio for scenario ids [1, 7, 13, 19, 25, 37, 43, 49, 55]: 1.0
+DEBUG      2020-04-17 17:36:42,345  211:BoxPlotter                      	 Saving plot data [0.11030404094229597, 0.139441572202241, 0.06781927810117727, 0.154785077677679, 0.16828034252464158, 0.17267681451819064, 0.05899757556943031, 0, 0.06208544909855388] for x tick label 20
+DEBUG      2020-04-17 17:36:42,345  209:BoxPlotter                      	 Feasibility ratio for scenario ids [2, 8, 14, 20, 26, 32, 38, 44, 50, 56]: 1.0
+DEBUG      2020-04-17 17:36:42,345  211:BoxPlotter                      	 Saving plot data [0.1557589701189029, 0.0849052789736985, 0.19432090712942157, 0.11383041133706343, 0.18736295004433148, 0.08582856378911555, 0.2194570684278396, 0.0738725434245388, 0.06605968568205398, 0.06490793211836196] for x tick label 30
+DEBUG      2020-04-17 17:36:42,346  209:BoxPlotter                      	 Feasibility ratio for scenario ids [3, 9, 15, 21, 27, 33, 39, 45, 51, 57]: 1.0
+DEBUG      2020-04-17 17:36:42,346  211:BoxPlotter                      	 Saving plot data [0.32153661836372033, 0.2307520085209973, 0.08544796617972228, 0.21582633501380027, 0.17746360237976794, 0.2148365021395955, 0.3449419479325979, 0.23175085275474624, 0.17488278074548314, 0.17358127096030318] for x tick label 40
+DEBUG      2020-04-17 17:36:42,346  209:BoxPlotter                      	 Feasibility ratio for scenario ids [4, 10, 16, 22, 28, 34, 40, 46, 52, 58]: 1.0
+DEBUG      2020-04-17 17:36:42,346  211:BoxPlotter                      	 Saving plot data [0.33567036136925404, 0.21590286059809977, 0.30791620317394547, 0.2563509818233623, 0.1373607711644471, 0.3115253119059747, 0.26454974168450357, 0.2097616459780146, 0.22361155227731955, 0.31404724871870593] for x tick label 50
+DEBUG      2020-04-17 17:36:42,346  209:BoxPlotter                      	 Feasibility ratio for scenario ids [5, 11, 17, 23, 29, 35, 41, 47, 53, 59]: 0.5
+DEBUG      2020-04-17 17:36:42,346  211:BoxPlotter                      	 Saving plot data [0.32386857719701106, 0.3776227646870495, 0.293167935493067, 0.2924175895801085, 0.24060288730076126] for x tick label 60
+DEBUG      2020-04-17 17:36:42,346  209:BoxPlotter                      	 Feasibility ratio for scenario ids [30]: 1.0
+DEBUG      2020-04-17 17:36:42,346  215:BoxPlotter                      	 Appending plot data [0] for x tick label 10 with existing values: [[0, 0, 0, 0, 0, 0, 0, 0.06460733200266879, 0.12596779102088534], 0, 9]
+DEBUG      2020-04-17 17:36:42,346  209:BoxPlotter                      	 Feasibility ratio for scenario ids [31]: 1.0
+DEBUG      2020-04-17 17:36:42,346  215:BoxPlotter                      	 Appending plot data [0] for x tick label 20 with existing values: [[0.11030404094229597, 0.139441572202241, 0.06781927810117727, 0.154785077677679, 0.16828034252464158, 0.17267681451819064, 0.05899757556943031, 0, 0.06208544909855388], 0, 9]

@@ -1,0 +1,58 @@
+INFO       2020-04-17 17:36:53,419  398:root                            	 Initialized Root Logger
+DEBUG      2020-04-17 17:36:53,419  422:BoxPlotter                      	 Created logger BoxPlotter
+INFO       2020-04-17 17:36:53,419  146:BoxPlotter                      	 
+Will read from ..
+	/home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/arbitrary-synthetic_result_reduced.pickle 
+		and save plot with name Substrate_size-to-relative_cost.pdf into
+	/home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/results/synthetic/arbitrary_fixed_relative/plots
+
+INFO       2020-04-17 17:36:53,420  148:BoxPlotter                      	 Reading pickle file at /home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/arbitrary-synthetic_result_reduced.pickle
+DEBUG      2020-04-17 17:36:53,535  422:alib.scenariogeneration         	 Created logger alib.scenariogeneration
+DEBUG      2020-04-17 17:36:53,539  422:alib.run_experiment             	 Created logger alib.run_experiment
+INFO       2020-04-17 17:36:53,539  146:BoxPlotter                      	 
+Will read from ..
+	/home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-synthetic_result_reduced.pickle 
+		and save plot with name Substrate_size-to-relative_cost.pdf into
+	/home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/results/synthetic/arbitrary_fixed_relative/plots
+
+INFO       2020-04-17 17:36:53,539  148:BoxPlotter                      	 Reading pickle file at /home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-synthetic_result_reduced.pickle
+INFO       2020-04-17 17:36:53,543  180:BoxPlotter                      	 Aggregating over parameter to scenario ID dictionary {1: set([0, 1, 2, 3, 4, 5]), 2: set([6, 7, 8, 9, 10, 11]), 3: set([12, 13, 14, 15, 16, 17]), 4: set([18, 19, 20, 21, 22, 23]), 5: set([24, 25, 26, 27, 28, 29]), 6: set([32, 33, 34, 35, 30, 31]), 7: set([36, 37, 38, 39, 40, 41]), 8: set([42, 43, 44, 45, 46, 47]), 9: set([48, 49, 50, 51, 52, 53]), 10: set([54, 55, 56, 57, 58, 59])}
+DEBUG      2020-04-17 17:36:53,543  209:BoxPlotter                      	 Feasibility ratio for scenario ids [0, 6, 12, 18, 24, 36, 42, 48, 54]: 1.0
+DEBUG      2020-04-17 17:36:53,543  211:BoxPlotter                      	 Saving plot data [0.9915477729380207, 0.9893601154845516, 1.0, 0.9999999999999999, 1.0, 1.0, 1.0, 0.9999999999999998, 1.0] for x tick label 10
+DEBUG      2020-04-17 17:36:53,543  209:BoxPlotter                      	 Feasibility ratio for scenario ids [1, 7, 13, 19, 25, 37, 43, 49, 55]: 1.0
+DEBUG      2020-04-17 17:36:53,543  211:BoxPlotter                      	 Saving plot data [0.9605828094807518, 0.9828817947008479, 0.962767603653047, 0.9786521943310462, 0.9858110263087375, 0.9825292134485889, 0.9767395191099295, 0.9786446471195983, 0.9898663814299861] for x tick label 20
+DEBUG      2020-04-17 17:36:53,543  209:BoxPlotter                      	 Feasibility ratio for scenario ids [2, 8, 14, 20, 26, 32, 38, 44, 50, 56]: 1.0
+DEBUG      2020-04-17 17:36:53,543  211:BoxPlotter                      	 Saving plot data [0.9690736936889168, 0.9717365345495033, 0.9830755256157887, 0.947493721611447, 0.982290841239616, 0.9866984987543219, 0.9871835477609394, 0.9634418230217348, 0.9736962534178468, 0.9529270874484053] for x tick label 30
+DEBUG      2020-04-17 17:36:53,543  209:BoxPlotter                      	 Feasibility ratio for scenario ids [3, 9, 15, 21, 27, 33, 39, 45, 51, 57]: 1.0
+DEBUG      2020-04-17 17:36:53,543  211:BoxPlotter                      	 Saving plot data [0.9831467179662705, 0.9708646246737314, 0.9627810387600294, 0.9862389013681149, 0.9757044184465253, 0.9944959805735585, 0.993555300876206, 0.971033333671221, 0.9638558796756045, 0.957916778889733] for x tick label 40
+DEBUG      2020-04-17 17:36:53,544  209:BoxPlotter                      	 Feasibility ratio for scenario ids [4, 10, 16, 22, 28, 34, 40, 46, 52, 58]: 1.0
+DEBUG      2020-04-17 17:36:53,544  211:BoxPlotter                      	 Saving plot data [0.9870657738784364, 0.9839394142594162, 0.9876006114081753, 0.9857829940812521, 0.9757692828939971, 0.9709582437866705, 0.9883698034329856, 0.9821041736123063, 0.9708622128558662, 0.9926302739395892] for x tick label 50
+DEBUG      2020-04-17 17:36:53,544  209:BoxPlotter                      	 Feasibility ratio for scenario ids [5, 11, 17, 23, 29, 35, 41, 47, 53, 59]: 0.5
+DEBUG      2020-04-17 17:36:53,544  211:BoxPlotter                      	 Saving plot data [0.979811029832101, 0.9878033487918316, 0.9731073006308539, 0.9725372619218388, 0.9831763484565569] for x tick label 60
+DEBUG      2020-04-17 17:36:53,544  209:BoxPlotter                      	 Feasibility ratio for scenario ids [30]: 1.0
+DEBUG      2020-04-17 17:36:53,544  215:BoxPlotter                      	 Appending plot data [1.0] for x tick label 10 with existing values: [[0.9915477729380207, 0.9893601154845516, 1.0, 0.9999999999999999, 1.0, 1.0, 1.0, 0.9999999999999998, 1.0], 0, 9]
+DEBUG      2020-04-17 17:36:53,544  209:BoxPlotter                      	 Feasibility ratio for scenario ids [31]: 1.0
+DEBUG      2020-04-17 17:36:53,544  215:BoxPlotter                      	 Appending plot data [0.9605375506879922] for x tick label 20 with existing values: [[0.9605828094807518, 0.9828817947008479, 0.962767603653047, 0.9786521943310462, 0.9858110263087375, 0.9825292134485889, 0.9767395191099295, 0.9786446471195983, 0.9898663814299861], 0, 9]
+INFO       2020-04-17 17:36:53,544  180:BoxPlotter                      	 Aggregating over parameter to scenario ID dictionary {1: set([0, 1, 2, 3, 4, 5]), 2: set([6, 7, 8, 9, 10, 11]), 3: set([12, 13, 14, 15, 16, 17]), 4: set([18, 19, 20, 21, 22, 23]), 5: set([24, 25, 26, 27, 28, 29]), 6: set([32, 33, 34, 35, 30, 31]), 7: set([36, 37, 38, 39, 40, 41]), 8: set([42, 43, 44, 45, 46, 47]), 9: set([48, 49, 50, 51, 52, 53]), 10: set([54, 55, 56, 57, 58, 59])}
+DEBUG      2020-04-17 17:36:53,544  209:BoxPlotter                      	 Feasibility ratio for scenario ids [0, 6, 12, 18, 24, 36, 42, 48, 54]: 1.0
+DEBUG      2020-04-17 17:36:53,544  211:BoxPlotter                      	 Saving plot data [0.9915477729380207, 0.9893601154845516, 1.0, 0.9999999999999999, 1.0, 1.0, 1.0, 0.9999999999999998, 1.0] for x tick label 10
+DEBUG      2020-04-17 17:36:53,545  209:BoxPlotter                      	 Feasibility ratio for scenario ids [1, 7, 13, 19, 25, 37, 43, 49, 55]: 1.0
+DEBUG      2020-04-17 17:36:53,545  211:BoxPlotter                      	 Saving plot data [0.9605828094807518, 0.9828817947008479, 0.962767603653047, 0.9786521943310462, 0.9858110263087375, 0.9825292134485889, 0.9767395191099295, 0.9786446471195983, 0.9898663814299861] for x tick label 20
+DEBUG      2020-04-17 17:36:53,545  209:BoxPlotter                      	 Feasibility ratio for scenario ids [2, 8, 14, 20, 26, 32, 38, 44, 50, 56]: 1.0
+DEBUG      2020-04-17 17:36:53,545  211:BoxPlotter                      	 Saving plot data [0.9690736936889168, 0.9717365345495033, 0.9830755256157887, 0.9514190640425695, 0.982290841239616, 0.9866984987543219, 0.9871835477609394, 0.9634418230217349, 0.9736962534178468, 0.9529270874484053] for x tick label 30
+DEBUG      2020-04-17 17:36:53,545  209:BoxPlotter                      	 Feasibility ratio for scenario ids [3, 9, 15, 21, 27, 33, 39, 45, 51, 57]: 1.0
+DEBUG      2020-04-17 17:36:53,545  211:BoxPlotter                      	 Saving plot data [0.98519234510604, 0.9708646246737312, 0.9640892828057481, 0.9862389013681149, 0.9757044184465253, 0.9944959805735585, 0.993555300876206, 0.9746683402620315, 0.9631474531749521, 0.957916778889733] for x tick label 40
+DEBUG      2020-04-17 17:36:53,545  209:BoxPlotter                      	 Feasibility ratio for scenario ids [4, 10, 16, 22, 28, 34, 40, 46, 52, 58]: 1.0
+DEBUG      2020-04-17 17:36:53,545  211:BoxPlotter                      	 Saving plot data [0.9840919640673995, 0.9839394142594161, 0.9876006114081753, 0.9857829940812521, 0.9739803351839117, 0.9709582437866703, 0.9888245830154796, 0.9821041736123063, 0.9708622128558662, 0.9926302739395892] for x tick label 50
+DEBUG      2020-04-17 17:36:53,545  209:BoxPlotter                      	 Feasibility ratio for scenario ids [5, 11, 17, 23, 29, 35, 41, 47, 53, 59]: 0.5
+DEBUG      2020-04-17 17:36:53,545  211:BoxPlotter                      	 Saving plot data [0.9786884741108174, 0.9878033487918316, 0.9747697237990962, 0.9766003882678799, 0.9811572968374864] for x tick label 60
+DEBUG      2020-04-17 17:36:53,546  209:BoxPlotter                      	 Feasibility ratio for scenario ids [30]: 1.0
+DEBUG      2020-04-17 17:36:53,546  215:BoxPlotter                      	 Appending plot data [1.0] for x tick label 10 with existing values: [[0.9915477729380207, 0.9893601154845516, 1.0, 0.9999999999999999, 1.0, 1.0, 1.0, 0.9999999999999998, 1.0], 0, 9]
+DEBUG      2020-04-17 17:36:53,546  209:BoxPlotter                      	 Feasibility ratio for scenario ids [31]: 1.0
+DEBUG      2020-04-17 17:36:53,546  215:BoxPlotter                      	 Appending plot data [0.9605375506879922] for x tick label 20 with existing values: [[0.9605828094807518, 0.9828817947008479, 0.962767603653047, 0.9786521943310462, 0.9858110263087375, 0.9825292134485889, 0.9767395191099295, 0.9786446471195983, 0.9898663814299861], 0, 9]
+INFO       2020-04-17 17:36:53,546  246:BoxPlotter                      	 Plotting data: {40: [[0.9979236266400858, 1.0000000000000002, 0.9986430260463933, 1.0, 1.0, 1.0, 1.0, 0.9962705194775966, 1.0007355327559837, 1.0], 0, 10], 10: [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], 0, 10], 50: [[1.0030218820187757, 1.0000000000000002, 1.0, 1.0, 1.0018367390443748, 1.0000000000000002, 0.9995400806267305, 1.0, 1.0, 1.0], 0, 10], 20: [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], 0, 10], 60: [[1.0011470000423817, 1.0, 0.9982945478017484, 0.9958395200382343, 1.0020578266355236], 5, 10], 30: [[1.0, 1.0, 1.0, 0.9958742234841882, 1.0, 1.0, 1.0, 0.9999999999999999, 1.0, 1.0], 0, 10]}
+DEBUG      2020-04-17 17:36:54,973 1346:matplotlib.font_manager         	 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=16.0 to DejaVu Sans (u'/home/balazs/university/stefan-collaboration-code/venv/local/lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+DEBUG      2020-04-17 17:36:54,978  658:matplotlib.backends.backend_pdf 	 Assigning font /F1 = u'/home/balazs/university/stefan-collaboration-code/venv/local/lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf'
+DEBUG      2020-04-17 17:36:54,992 1346:matplotlib.font_manager         	 findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=20.0 to DejaVu Sans (u'/home/balazs/university/stefan-collaboration-code/venv/local/lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+DEBUG      2020-04-17 17:36:55,040  710:matplotlib.backends.backend_pdf 	 Embedding font /home/balazs/university/stefan-collaboration-code/venv/local/lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf.
+DEBUG      2020-04-17 17:36:55,041  717:matplotlib.backends.backend_pdf 	 Writing TrueType font.

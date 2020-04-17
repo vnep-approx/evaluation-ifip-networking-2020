@@ -1,0 +1,9 @@
+INFO       2020-04-17 15:49:33,190  398:root                            	 Initialized Root Logger
+DEBUG      2020-04-17 15:49:33,191  422:BoxPlotter                      	 Created logger BoxPlotter
+INFO       2020-04-17 15:49:33,191  146:BoxPlotter                      	 
+Will read from ..
+	/home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-routing/fixed-synthetic_result_reduced.pickle 
+		and save plot with name Substrate_size-to-relative_cost.pdf into
+	/home/balazs/university/stefan-collaboration-code/evaluation-fog-model-2019/results/synthetic/fixed-routing/plots-cleanup-test
+
+INFO       2020-04-17 15:49:33,191  148:BoxPlotter                      	 Reading pickle file at /home/balazs/university/stefan-collaboration-code/alib_experiment_home/input/fixed-routing/fixed-synthetic_result_reduced.pickle
