@@ -61,6 +61,6 @@ python -m vnep_approx.cli start_experiment ${ALIB_EXPERIMENT_HOME}/execution.yml
 move_logs_and_output
 
 printf "Reducing results into reduced_results.pickle \n"
-python -m evaluation_fog_model_2019.cli reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant results.pickle --output_pickle_file reduced_results.pickle
+python -m evaluation_ifip_networking_2020.cli reduce_to_plotdata_rr_seplp_optdynvmp_cost_variant results.pickle --output_pickle_file reduced_results.pickle
 move_logs_and_output
 
